@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @ComponentScan({"com.wine.demo.controller","com.wine.demo.model","com.wine.demo.repository","com.wine.demo.service","com.wine.demo.config","com.wine.demo.exception"})
 @EnableJpaRepositories(basePackages = "com.wine.demo.repository")
-@EntityScan(basePackages = "com.wine.demo.model")
+@EntityScan(basePackages = "com.wine.demo.entity")
 public class WineprojectApplication {
 
 	public static void main(String[] args) {
