@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>메시지</title>
+    <script type="text/javascript" th:inline="javascript">
+    window.onload = function() {
+        // Thymeleaf로부터 전달받은 메시지를 JavaScript 문자열로 정확하게 변환
+        var message = /*[[${message}]]*/ 'default message';
+        var redirect = /*[[${redirect}]]*/ '/';
+
+        alert(message);
+        window.location.href = redirect;
+    };
+</script>
+</head>
+<body>
+</body>
+</html>

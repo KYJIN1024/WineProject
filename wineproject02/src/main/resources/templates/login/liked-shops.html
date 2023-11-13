@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>좋아요 표시한 샵/레스토랑</title>
+    <!-- 여기에 필요한 CSS, JS 파일을 포함시켜주세요. -->
+</head>
+<body>
+
+    <ul>
+        <li th:each="shop : ${shops}">
+            <a th:href="@{/partners/shop/view/{id}(id=${shop.shopboardid})}" th:text="${shop.shopboardtitle}"></a>
+        </li>
+    </ul>
+</body>
+</html>

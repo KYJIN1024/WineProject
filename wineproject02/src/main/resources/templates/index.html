@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://thymeleaf.org">
+
+
+<head>
+    <meta charset="utf-8">
+    <title>Kowasa-한국와인 정보 커뮤니티 사이트</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet"> 
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Spinner End -->
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+            <h2 class="m-0 text-primary" style="font-family: 'Nanum Gothic', sans-serif;">
+			  <img src="img/winelogo.jpg" alt="Image" width="50" height="50">
+			  KOWASA &nbsp;&nbsp; <h5>한국와인 정보 커뮤니티</h5>
+			</h2>
+        </a>
+        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto p-4 p-lg-0">
+                <a href="/" class="nav-item nav-link active">Home</a>
+                <div class="nav-item dropdown">
+                    <a href="search" class="nav-item nav-link active">와인검색</a>
+                    
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">커뮤니티</a>
+                    <div class="dropdown-menu fade-up m-0">
+                        <a href="/community/freeboard/list" class="dropdown-item">자유게시판</a>
+                        <a href="/community/eventboard/list" class="dropdown-item">행사정보</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">와인파트너스</a>
+                    <div class="dropdown-menu fade-up m-0">
+                        <a href="/partners/producer/list"  class="dropdown-item">생산자</a>
+                        <a href="/partners/shop/list"  class="dropdown-item">샵/레스토랑 정보</a>
+                        <a href="/partners/job/list" class="dropdown-item">구인</a>
+                    </div>
+                </div>
+            </div>
+           	<a href="login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" th:if="${#authorization.expression('isAnonymous()')}">
+				    Login<i class="fa fa-arrow-right ms-3"></i>
+				</a>
+				<div class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" th:if="${#authorization.expression('isAuthenticated()')}">
+				    <p style="margin-top: 10px;"><span th:text="${#session.getAttribute('username')}"></span>님, 환영합니다.</p>
+				    <button style="padding: 2px 5px;" onclick="location.href='/logout'">로그아웃</button>
+				    <button style="padding: 2px 5px;" onclick="location.href='/mypage'">마이페이지</button>
+				</div>
+     	   </div>
+    </nav>
+    <!-- Navbar End -->
+
+
+   <!-- Carousel Start -->
+<div class="container-fluid p-0 mb-5">
+    <div id="header-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <!-- Section 1: 와인리뷰 -->
+            <div class="carousel-item active">
+                <img class="w-100" src="img/koreawinebg1.jpg" alt="Image">
+                <div class="carousel-caption d-flex align-items-center">
+                    <div class="container">
+                        <div class="row align-items-center justify-content-center justify-content-lg-start">
+                            <div class="col-10 col-lg-7 text-center text-lg-start">
+                                <h3 class="text-white text-uppercase mb-3 animated slideInDown">와인 검색</h3>
+                                <h1 class="display-3 text-white mb-4 pb-3 animated slideInDown"></h1>
+                                <a href="search" class="btn btn-primary py-3 px-5 animated slideInDown">자세히보기<i class="fa fa-arrow-right ms-3"></i></a>
+                            </div>
+                            <div class="col-lg-5 d-none d-lg-flex animated zoomIn">
+                                <img class="img-fluid" src="img/koreawine1.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2: 커뮤니티 -->
+            <div class="carousel-item">
+                <img class="w-100" src="img/koreawinebg2.jpg" alt="Image">
+                <div class="carousel-caption d-flex align-items-center">
+                    <div class="container">
+                        <div class="row align-items-center justify-content-center justify-content-lg-start">
+                            <div class="col-10 col-lg-7 text-center text-lg-start">
+                                <h3 class="text-white text-uppercase mb-3 animated slideInDown">커뮤니티-자유게시판</h3>
+                                <h1 class="display-3 text-white mb-4 pb-3 animated slideInDown"></h1>
+                                <a href="/community/freeboard/list" class="btn btn-primary py-3 px-5 animated slideInDown">자세히보기<i class="fa fa-arrow-right ms-3"></i></a>
+                            </div>
+                            <div class="col-lg-5 d-none d-lg-flex animated zoomIn">
+                                <img class="img-fluid" src="img/koreawine2.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+
+
+        <!-- Carousel controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<!-- Carousel End -->
+
+
+    <!-- Service Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="d-flex py-5 px-4">
+                        <i class="fas fa-wine-bottle fa-3x text-primary flex-shrink-0"></i>
+                        <div class="ps-4">
+                            <h5 class="mb-3">와인 생산자</h5>
+                            <p>국산 와인의 자랑, 우리나라의 와인 생산자들을 만나보세요!
+								국내에서 재배된 포도로 만들어진 와인은 그 특별한 맛과 향으로 많은 사랑을 받고 있습니다. 
+								이곳에서는 그 와인을 생산하는 생산자들의 이야기와 열정을 공유하게 됩니다. 
+								각각의 생산자가 가진 독특한 철학과 기술로 완성된 와인의 세계로 초대합니다.
+							</p>
+                            <a class="text-secondary border-bottom" href="/partners/producer/list">자세히 보기</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="d-flex bg-light py-5 px-4">
+                       <i class="fas fa-tag fa-3x text-primary flex-shrink-0"></i>
+                        <div class="ps-4">
+                            <h5 class="mb-3">샵/레스토랑 정보</h5>
+                            <p>국산 와인을 만나고, 그 맛을 즐길 수 있는 최적의 장소!
+							국내에서 생산된 와인은 그 특별한 맛으로 많은 샵과 레스토랑에서 소개되고 있습니다. 
+							이곳에서는 국산 와인을 판매하거나 메뉴로 제공하는 샵과 레스토랑의 정보를 얻을 수 있습니다. 
+							와인과 함께하는 특별한 시간을 제공하는 장소들을 발견하세요.</p>
+                            <a class="text-secondary border-bottom" href="/partners/shop/list">자세히 보기</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="d-flex py-5 px-4">
+                        <i class="fas fa-users fa-3x text-primary flex-shrink-0"></i>
+                        <div class="ps-4">
+                            <h5 class="mb-3">구인</h5>
+                            <p>와인 산업의 발전을 함께할 인재를 찾거나, 꿈의 직장을 찾아보세요!
+								국산 와인 산업은 빠르게 성장하고 있는 분야로, 다양한 전문가와 인재가 필요합니다. 
+								이곳에서는 와인 관련 분야의 구인정보를 확인하실 수 있습니다. 
+								여러분의 열정과 능력을 펼칠 수 있는 기회가 기다리고 있습니다.</p>
+                            <a class="text-secondary border-bottom" href="/partners/job/list">자세히 보기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+
+    <!-- About Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6 pt-4" style="min-height: 400px;">
+                    <div class="position-relative h-100 wow fadeIn" data-wow-delay="0.1s">
+                        <img class="position-absolute img-fluid w-100 h-100" src="img/winenews.jpg" style="object-fit: cover;" alt="">
+                        <div class="position-absolute top-0 end-0 mt-n4 me-n4 py-4 px-5" style="background: rgba(0, 0, 0, .08);">
+                            <h1 class="display-4 text-white mb-0">W <span class="fs-4">ine</span></h1>
+                            <h4 class="text-white">news</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h6 class="text-primary text-uppercase">와인소식</h6>
+                    <h1 class="mb-4"><span class="text-primary">한국와인</span> <br />다양한 소식 & 박람회/ 전시회 정보</h1>
+                    <p class="mb-4">와인관련 다양한 뉴스와 박람회/ 전시회 소식, 다양한 상품에 대한 정보를 확인하세요. </p>
+                    <div class="row g-4 mb-3 pb-3">
+                        <div class="col-12 wow fadeIn" data-wow-delay="0.1s">
+                            <div class="d-flex">
+                                <div class="bg-light d-flex flex-shrink-0 align-items-center justify-content-center mt-1" style="width: 45px; height: 45px;">
+                                    <span class="fw-bold text-secondary">01</span>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>와인뉴스</h6>
+                                    <span>와인관련 소식</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 wow fadeIn" data-wow-delay="0.3s">
+                            <div class="d-flex">
+                                <div class="bg-light d-flex flex-shrink-0 align-items-center justify-content-center mt-1" style="width: 45px; height: 45px;">
+                                    <span class="fw-bold text-secondary">02</span>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>박람회 및 전시회 일정</h6>
+                                    <span>박람회 및 전시회 일정 검색</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 wow fadeIn" data-wow-delay="0.5s">
+                            <div class="d-flex">
+                                <div class="bg-light d-flex flex-shrink-0 align-items-center justify-content-center mt-1" style="width: 45px; height: 45px;">
+                                    <span class="fw-bold text-secondary">03</span>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>국산와인 상품관련</h6>
+                                    <span>국산와인 새로운 소식 확인</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/community/eventboard/list" class="btn btn-primary py-3 px-5">자세히 보기 <i class="fa fa-arrow-right ms-3"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    <!-- Fact Start -->
+		<div class="container-fluid fact bg-dark my-5 py-5">
+		    <div class="container">
+		        <div class="row g-4">
+		            <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.1s">
+		                <i class="fa fa-check fa-2x text-white mb-3"></i>
+		                <h2 class="text-white mb-2" data-toggle="counter-up" th:text="${wineCount}">1234</h2>
+		                <p class="text-white mb-0">와인DB에 등록된 와인수</p>
+		            </div>
+		            <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.3s">
+		                <i class="fa fa-users-cog fa-2x text-white mb-3"></i>
+		                <h2 class="text-white mb-2" data-toggle="counter-up" th:text="${communityCount}">1234</h2>
+		                <p class="text-white mb-0">와인 커뮤니티 게시글수</p>
+		            </div>
+		            <div class="col-md-6 col-lg-3 text-center wow fadeIn" data-wow-delay="0.5s">
+		                <i class="fa fa-users fa-2x text-white mb-3"></i>
+		                <h2 class="text-white mb-2" data-toggle="counter-up" th:text="${partnersCount}">1234</h2>
+		                <p class="text-white mb-0">와인파트너스 게시글 수</p>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		<!-- Fact End -->
+
+
+    <!-- Service Start -->
+    <div class="container-xxl service py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="text-primary text-uppercase">국산 와인 쉽게 찾기</h6>
+                <h1 class="mb-5">국산 와인 검색</h1>
+            </div>
+            <div class="row g-4 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="col-lg-4">
+                    <div class="nav w-100 nav-pills me-4">
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4 active" data-bs-toggle="pill" data-bs-target="#tab-pane-1" type="button">
+                             <i class="fas fa-wine-bottle fa-2x me-3"></i>
+                            <h4 class="m-0">원료별로 검색하기</h4>
+                        </button>
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-2" type="button">
+                            <i class="fas fa-map-marker-alt fa-2x me-3"></i>
+                            <h4 class="m-0">지역별로 검색하기</h4>
+                        </button>
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-3" type="button">
+                             <i class="fas fa-tag fa-2x me-3"></i>
+                            <h4 class="m-0">용량별로 검색하기</h4>
+                        </button>
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-0" data-bs-toggle="pill" data-bs-target="#tab-pane-4" type="button">
+                             <i class="fas fa-wine-glass-alt fa-2x me-3"></i>
+                            <h4 class="m-0">도수별로 검색하기</h4>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="tab-content w-100">
+                        <div class="tab-pane fade show active" id="tab-pane-1">
+                            <div class="row g-4">
+                                <div class="col-md-6" style="min-height: 350px;">
+                                    <div class="position-relative h-100">
+                                        <img class="position-absolute img-fluid w-100 h-100" src="img/winevarity.jpg"
+                                            style="object-fit: cover;" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="mb-3">원료별로 검색하기</h3>
+                                    <p class="mb-4">한국 내에서 생산되는 다양한 종류의 와인을 원료에 따라 검색해보세요. 원하는 원료를 기준으로 검색하여 선호하는 특성을 가진 와인을 찾을 수 있습니다.</p>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="ingredient1" name="ingredient" value="포도">
+										   <label class="form-check-label" for="ingredient1">포도</label>
+                                    </div>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="ingredient2" name="ingredient" value="머루">
+										   <label class="form-check-label" for="ingredient2">머루</label>
+                                    </div>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="ingredient3" name="ingredient" value="복분자">
+										   <label class="form-check-label" for="ingredient3">복분자</label>
+                                    </div>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="ingredient4" name="ingredient" value="사과">
+										   <label class="form-check-label" for="ingredient4">사과</label>
+                                    </div>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="ingredient5" name="ingredient" value="복숭아">
+										   <label class="form-check-label" for="ingredient5">복숭아</label>
+                                    </div>
+                                   
+                                    <a href="javascript:void(0);" onclick="redirectToSearch()" class="btn btn-primary py-3 px-5 mt-3">검색<i class="fa fa-arrow-right ms-3"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-2">
+                            <div class="row g-4">
+                                <div class="col-md-6" style="min-height: 350px;">
+                                    <div class="position-relative h-100">
+                                        <img class="position-absolute img-fluid w-100 h-100" src="img/koreawinemap.jpg"
+                                            style="object-fit: cover;" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="mb-3">지역별로 검색하기</h3>
+                                    <p class="mb-4">한국 내 다양한 지역에서 생산되는 와인을 지역별로 검색해보세요. 원하는 지역의 와인을 찾아 검색할수 있습니다.</p>
+                                    <div class="mb-3">
+										    <input type="checkbox" class="form-check-input" id="region1" name="region" value="강원도">
+										    <label class="form-check-label" for="region1">강원도</label>
+										</div>
+										<div class="mb-3">
+										    <input type="checkbox" class="form-check-input" id="region2" name="region" value="경기도">
+										    <label class="form-check-label" for="region2">경기도</label>
+										</div>
+										<div class="mb-3">
+										    <input type="checkbox" class="form-check-input" id="region3" name="region" value="경상남도">
+										    <label class="form-check-label" for="region3">경상남도</label>
+										</div>
+										<div class="mb-3">
+										    <input type="checkbox" class="form-check-input" id="region4" name="region" value="경상북도">
+										    <label class="form-check-label" for="region4">경상북도</label>
+										</div>
+										<div class="mb-3">
+										    <input type="checkbox" class="form-check-input" id="region5" name="region" value="충청남도">
+										    <label class="form-check-label" for="region5">충청남도</label>
+										</div>
+										<div class="mb-3">
+										    <input type="checkbox" class="form-check-input" id="region6" name="region" value="충청북도">
+										    <label class="form-check-label" for="region6">충정북도</label>
+										</div>
+										<div class="mb-3">
+										    <input type="checkbox" class="form-check-input" id="region7" name="region" value="전라북도">
+										    <label class="form-check-label" for="region7">전라북도</label>
+										</div>
+										<div class="mb-3">
+										    <input type="checkbox" class="form-check-input" id="region8" name="region" value="전라남도">
+										    <label class="form-check-label" for="region8">전라남도</label>
+										</div>
+										<div class="mb-3">
+										    <input type="checkbox" class="form-check-input" id="region9" name="region" value="제주도">
+										    <label class="form-check-label" for="region9">제주도</label>
+										</div>
+                                    <a href="javascript:void(0);" onclick="redirectToSearch()" class="btn btn-primary py-3 px-5 mt-3">검색<i class="fa fa-arrow-right ms-3"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-3">
+                            <div class="row g-4">
+                                <div class="col-md-6" style="min-height: 350px;">
+                                    <div class="position-relative h-100">
+                                        <img class="position-absolute img-fluid w-100 h-100" src="img/wineprice.jpg"
+                                            style="object-fit: cover;" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="mb-3">용량별로 검색하기</h3>
+                                    <p class="mb-4"></p>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="volume1" name="volume" value="300ml">
+										   <label class="form-check-label" for="volume1">300ml</label>
+                                    </div>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="volume2" name="volume" value="375ml">
+										   <label class="form-check-label" for="volume2">375ml</label>
+                                    </div>
+                                     <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="volume2" name="volume" value="500ml">
+										   <label class="form-check-label" for="volume2">500ml</label>
+                                    </div>
+                                     <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="volume3" name="volume" value="750ml">
+										   <label class="form-check-label" for="volume3">750ml</label>
+                                    </div>
+                                    
+                                    <a href="javascript:void(0);" onclick="redirectToSearch()" class="btn btn-primary py-3 px-5 mt-3">검색<i class="fa fa-arrow-right ms-3"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab-pane-4">
+                            <div class="row g-4">
+                                <div class="col-md-6" style="min-height: 350px;">
+                                    <div class="position-relative h-100">
+                                        <img class="position-absolute img-fluid w-100 h-100" src="img/winestyle.jpg"
+                                            style="object-fit: cover;" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="mb-3">도수별 검색하기</h3>
+                                    <p class="mb-4"></p>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="degree1" name="degree" value="10도이하">
+										   <label class="form-check-label" for="degree1">10도이하</label>
+                                    </div>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="degree2" name="degree" value="10-11도">
+										   <label class="form-check-label" for="degree2">10-11도</label>
+                                    </div>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="degree3" name="degree" value="11-12도">
+										   <label class="form-check-label" for="degree3">11-12도</label>
+                                    </div>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="degree4" name="degree" value="12-13도">
+										   <label class="form-check-label" for="degree4">12-13도</label>
+                                    </div>
+                                    <div class="mb-3">
+                                    	 <input type="checkbox" class="form-check-input" id="degree5" name="degree" value="14도이상">
+										   <label class="form-check-label" for="degree5">14도이상</label>
+                                    </div>
+                                    <a href="javascript:void(0);" onclick="redirectToSearch()" class="btn btn-primary py-3 px-5 mt-3">검색<i class="fa fa-arrow-right ms-3"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Service End -->
+
+
+    <!-- Booking Start -->
+    <div class="container-fluid bg-primary booking my-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="row gx-5">
+                <div class="col-lg-6 py-5">
+                    <div class="py-5">
+                        <h1 class="text-white mb-4">와인파트너스에 등록하세요.</h1>
+                        <p class="text-white mb-0">다양한 홍보를 통해 인지도를 늘리고 매출을 증대시켜 파트너님의 성공을 도울 수 있습니다. </p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="bg-primary h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
+                        <h1 class="text-white mb-4">와인파트너스 등록신청</h1>
+                      <form onsubmit="validateForm(event)">
+                            <div class="row g-3">
+                                <div class="col-12 col-sm-6">
+                                    <input type="text" class="form-control border-0" placeholder="업체명" style="height: 55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <input type="email" class="form-control border-0" placeholder="이메일" style="height: 55px;">
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <select class="form-select border-0" style="height: 55px;">
+                                        <option selected>서비스를 선택하세요</option>
+                                        <option value="1">생산자</option>
+                                        <option value="2">샵/레스토랑</option>
+                                        <option value="3">구인</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="date" id="date1" data-target-input="nearest">
+                                        <input type="text"
+                                            class="form-control border-0 datetimepicker-input"
+                                            placeholder="날짜" data-target="#date1" data-toggle="datetimepicker" style="height: 55px;">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <textarea class="form-control border-0" placeholder="내용"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-secondary w-100 py-3" type="submit">파트너스 등록</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Booking End -->
+
+
+    <!-- Team Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="text-primary text-uppercase">// 와인 파트너스 //</h6>
+                <h1 class="mb-5">코와사 전문 협력 와인너리</h1>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="team-item">
+                        <div class="position-relative overflow-hidden">
+                            <div class="team-image-1 position-relative overflow-hidden" ></div>
+                            <div class="team-overlay position-absolute start-0 top-0 w-100 h-100">
+                               <a class="btn btn-square mx-1" href="https://sanmacwinery.com/"><i class="fa fa-home" aria-hidden="true"></i></a>
+                                <a class="btn btn-square mx-1" href="https://www.instagram.com/sanmacwinery/"><i class="fab fa-instagram"></i></a>
+                                <a class="btn btn-square mx-1" href="https://smartstore.naver.com/sanmacwine"><i class="fa fa-shopping-bag" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="bg-light text-center p-4">
+                            <h5 class="fw-bold mb-0">산막와이너리</h5>
+                            <small>[대표상품]<br/> 아로퓨어/라라/비원퓨어</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="team-item">
+                        <div class="position-relative overflow-hidden">
+                            <img class="img-fluid" src="img/team-2.jpg" alt="">
+                            <div class="team-overlay position-absolute start-0 top-0 w-100 h-100">
+                                <a class="btn btn-square mx-1" href="https://sanmeoru.com/"><i class="fa fa-home" aria-hidden="true"></i></a>
+                                <a class="btn btn-square mx-1" href="https://smartstore.naver.com/sanmeorufarm"><i class="fa fa-shopping-bag" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="bg-light text-center p-4">
+                            <h5 class="fw-bold mb-0">산머루농원</h5>
+                            <small>[대표상품]<br/> 감악산 산머루주/ 무주구천동산머루주</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="team-item">
+                        <div class="position-relative overflow-hidden">
+                            <img class="img-fluid" src="img/team-3.jpg" alt="">
+                            <div class="team-overlay position-absolute start-0 top-0 w-100 h-100">
+                               <a class="btn btn-square mx-1" href="https://blog.naver.com/hyen0148"><i class="fa fa-home" aria-hidden="true"></i></a>
+                                <a class="btn btn-square mx-1" href="https://smartstore.naver.com/sdsmeru"><i class="fa fa-shopping-bag" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="bg-light text-center p-4">
+                            <h5 class="fw-bold mb-0">수도산와이너리</h5>
+                            <small>[대표상품]<br/> 산머루 크라테로제 / 산머루 크라테 드라이</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
+                    <div class="team-item">
+                        <div class="position-relative overflow-hidden">
+                            <img class="img-fluid" src="img/team-4.jpg" alt="">
+                            <div class="team-overlay position-absolute start-0 top-0 w-100 h-100">
+                                 <a class="btn btn-square mx-1" href="https://thesool.com/front/visitingBrewery/M000000072/view.do?brewId=BR00000162"><i class="fa fa-home" aria-hidden="true"></i></a>
+                                <a class="btn btn-square mx-1" href="https://smartstore.naver.com/choosi/?"><i class="fa fa-shopping-bag" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="bg-light text-center p-4">
+                            <h5 class="fw-bold mb-0">양촌 와이너리</h5>
+                            <small>[대표상품]<br/>추시감와인/아치23</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Team End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-light mb-4">주소</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>서울특별시 강남구 테헤란로1길</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>010-7583-7320</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>kowasa@wine.com</p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-light mb-4">영업시간</h4>
+                    <h6 class="text-light">월요일 - 금요일:</h6>
+                    <p class="mb-4">오전9시 - 저녁6시</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-light mb-4">서비스</h4>
+                    <a class="btn btn-link" href="" onclick="alert('서비스 준비중입니다.'); return false;">국산와인 B2B 상담</a>
+                    <a class="btn btn-link" href="" onclick="alert('서비스 준비중입니다.'); return false;">판매전략</a>
+                    <a class="btn btn-link" href="" onclick="alert('서비스 준비중입니다.'); return false;">전시회 일정안내 </a>
+                    <a class="btn btn-link" href="" onclick="alert('서비스 준비중입니다.'); return false;">파트너스 등록</a>
+               
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="text-light mb-4">와인 뉴스레터 구독</h4>
+                    <p>매달 다양한 와인관련 소식을 이메일로 받아보세요!</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="이메일주소를 입력해주세요">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">등록</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">Kowasa</a>, All Right Reserved.
+
+                       
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a href="">Home</a>
+                            <a href="">Cookies</a>
+                            <a href="">Help</a>
+                            <a href="">FQAs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/wow/wow.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/counterup/counterup.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js">
+
+    </script>
+    
+    <script>
+    function redirectToSearch() {
+        // 체크박스에서 선택된 모든 값을 가져옵니다.
+        let ingredients = [];
+        document.querySelectorAll('input[name="ingredient"]:checked').forEach(element => {
+            ingredients.push(element.value);
+        });
+        let regions = [];
+        document.querySelectorAll('input[name="region"]:checked').forEach(element => {
+            regions.push(element.value);
+        });
+        let volumes = [];
+        document.querySelectorAll('input[name="volume"]:checked').forEach(element => {
+            volumes.push(element.value);
+        });
+        let degrees = [];
+        document.querySelectorAll('input[name="degree"]:checked').forEach(element => {
+            degrees.push(element.value);
+        });
+
+        // 쿼리 파라미터를 만듭니다. 배열의 값을 쉼표로 구분하여 전달합니다.
+        let queryParams = `?ingredient=${ingredients.join(",")}&region=${regions.join(",")}&volume=${volumes.join(",")}&degree=${degrees.join(",")}`;
+
+        // search.html 페이지로 리다이렉트합니다.
+        window.location.href = `/search${queryParams}`;
+    }
+    
+    function validateForm(event) {
+        // Prevent the form from submitting
+        event.preventDefault();
+
+        // Get form elements
+        var companyName = document.querySelector('input[placeholder="업체명"]').value;
+        var email = document.querySelector('input[placeholder="이메일"]').value;
+        var service = document.querySelector('.form-select').value;
+        var content = document.querySelector('textarea[placeholder="내용"]').value;
+
+        // Check if any field is empty
+        if (!companyName.trim()) {
+            alert("업체명을 입력하세요.");
+            return;
+        }
+
+        // Check if email is valid
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailPattern.test(email)) {
+            alert("유효한 이메일 주소를 입력하세요.");
+            return;
+        }
+
+        // Check if service is selected
+        if (service === "서비스를 선택하세요") {
+            alert("서비스를 선택하세요.");
+            return;
+        }
+
+        // Check content length
+        if (content.trim().length < 10) {
+            alert("내용은 10자 이상 입력해주세요.");
+            return;
+        }
+
+        // If everything is valid
+        alert("정상적으로 등록되었습니다. 등록하신 이메일로 연락드리겠습니다.");
+        // If you want to submit the form after validation, uncomment the line below
+        // document.querySelector('form').submit();
+    }
+    
+    
+    
+    </script>
+</body>
+
+</html>

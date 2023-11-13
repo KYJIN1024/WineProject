@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+		<style>
+		   .flex-container {
+		      display: flex;
+		      gap: 10px;
+		      align-items: center;
+		   }
+		   
+		    .layout {
+		      padding: 10px;
+		      border: 1px solid #eaeaea;
+		      background-color: #f9f9f9;
+		      border-radius: 10px;
+		      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+		   }
+		   
+		   .flex-container {
+		      margin-bottom: 20px;
+		   }
+		   
+		   h2, h3, h5 {
+		      margin-bottom: 15px;
+		   }
+		   
+		   .action-buttons a {
+		      margin-right: 10px;
+		      padding: 5px 15px;
+		      border: 1px solid #007bff;
+		      color: #007bff;
+		      border-radius: 5px;
+		      transition: all 0.3s;
+		   }
+		   
+		   .action-buttons a:hover {
+		      background-color: #007bff;
+		      color: #fff;
+		      text-decoration: none;
+		   }
+		   
+		   .col-lg-9 {
+			    width: 55%;  /* 원하는 너비 값으로 조절 */
+			   
+			}
+			
+			.col-lg-3 {
+			    width: 20%;  /* 원하는 너비 값으로 조절 */
+		
+			}
+			
+			img {
+			    max-width: 100%; /* 이미지의 최대 너비를 100%로 설정 (부모 컨테이너의 너비에 맞춤) */
+			    height: auto;    /* 이미지의 높이를 자동으로 조정 (원본 이미지의 비율을 유지) */
+			}
+			
+			.main-content img {
+			    max-width: 100%;
+			    height: auto;
+			}
+						
+		</style>
+
+
+	    <meta charset="utf-8">
+	    <title>Kowasa-한국와인 정보 커뮤니티 사이트</title>
+	    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+	    <meta content="" name="keywords">
+	    <meta content="" name="description">
+	
+	    <!-- Favicon -->
+	    <link href="img/favicon.ico" rel="icon">
+	
+	    <!-- Google Web Fonts -->
+	    <link rel="preconnect" href="https://fonts.googleapis.com">
+	    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet"> 
+	
+	    <!-- Icon Font Stylesheet -->
+	    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+	    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+	
+	    <!-- Libraries Stylesheet -->
+	    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+	    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+	    <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+	
+	    <!-- Customized Bootstrap Stylesheet -->
+	    <link href="/css/bootstrap.min.css" rel="stylesheet">
+	    
+	     <!-- Template Stylesheet -->
+	    <link href="/css/style.css" rel="stylesheet">
+	    
+
+</head>
+    
+ <body>
+ 		   <!-- Spinner Start -->
+	    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+	        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+	            <span class="sr-only">Loading...</span>
+	        </div>
+	    </div>
+	    <!-- Spinner End -->
+	
+	    <!-- Navbar Start -->
+	    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+	        <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+	            <h2 class="m-0 text-primary" style="font-family: 'Nanum Gothic', sans-serif;">
+		  <img src="/img/winelogo.jpg" alt="Image" width="50" height="50">
+		  KOWASA &nbsp;&nbsp; <h5>한국와인 정보 커뮤니티</h5>
+		</h2>
+	        </a>
+	        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+	            <span class="navbar-toggler-icon"></span>
+	        </button>
+	        <div class="collapse navbar-collapse" id="navbarCollapse">
+	            <div class="navbar-nav ms-auto p-4 p-lg-0">
+	                <a href="/" class="nav-item nav-link active">Home</a>
+	                <div class="nav-item dropdown">
+	                    <a href="/search" class="nav-item nav-link active">와인검색</a>
+	                    
+	                </div>
+	                <div class="nav-item dropdown">
+	                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">커뮤니티</a>
+	                    <div class="dropdown-menu fade-up m-0">
+	                        <a href="/community/freeboard/list" class="dropdown-item">자유게시판</a>
+	                        <a href="/community/eventboard/list" class="dropdown-item">행사정보</a>
+	                    </div>
+	                </div>
+	                <div class="nav-item dropdown">
+	                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">와인파트너스</a>
+	                    <div class="dropdown-menu fade-up m-0">
+	                        <a href="/partners/producer/list"  class="dropdown-item">생산자</a>
+	                        <a href="/partners/shop/list" class="dropdown-item">샵/레스토랑 정보</a>
+	                        <a href="/partners/job/list" class="dropdown-item">구인구직</a>
+	                    </div>
+	                </div>
+	            </div>
+	           	<a href="/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" th:if="${#authorization.expression('isAnonymous()')}">
+					    Login<i class="fa fa-arrow-right ms-3"></i>
+					</a>
+					<div class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" th:if="${#authorization.expression('isAuthenticated()')}">
+					    <p style="margin-top: 10px;"><span th:text="${#session.getAttribute('username')}"></span>님, 환영합니다.</p>
+					    <button style="padding: 2px 5px;" onclick="location.href='/logout'">로그아웃</button>
+					    <button style="padding: 2px 5px;" onclick="location.href='/mypage'">마이페이지</button>
+					</div>
+	     	   </div>
+	    </nav>
+	    <!-- Navbar End -->
+	     <!-- Back to Top -->
+	    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+ 
+ 		<link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+	<div class="container">
+	      <div class="row"> 
+			      <!-- 메인 컨텐츠 -->
+		            <div class="col-lg-8">
+							<div class="layout">
+								<!-- 제목 -->
+								   <h2 th:text="${jobboard.jobboardtitle}">제목</h2>
+		   
+								<!-- 작성자, 작성일, 조회수 -->
+								<table class="table table-bordered">
+								    <tbody>
+								        <tr>
+								            <th style="width: 20%;">업종</th>
+								            <td th:text="${jobboard.jobboardsectors}"></td>
+								        </tr>
+								        <tr>
+								            <th style="width: 20%;">기업명</th>
+								            <td th:utext="${jobboard.jobboardcompanyname}"></td>
+								        </tr>
+								        <tr>
+								            <th style="width: 20%;">지역</th>
+								            <td th:text="${jobboard.jobboardregion}"></td>
+								        </tr>
+								        <tr>
+								            <th style="width: 20%;">등록일</th>
+								            <td th:text="${jobboard.jobboardregistrationdate}"></td>
+								        </tr>
+								    </tbody>
+								</table>
+								   
+								   <!-- 내용 -->
+								   <h3 class="main-content" th:utext="${jobboard.jobboardcontent}" style="font-size: 16px;">내용</h3>
+								   
+								   <div class="action-buttons">
+								      <a th:href="@{/partners/job/delete(id=${jobboard.jobboardid})}">글 삭제</a>
+								      <a th:href="@{/partners/job/modify/{id}(id = ${jobboard.jobboardid})}">글 수정</a>
+								      <a th:href="@{/partners/job/list}">목록</a>
+								</div>
+							</div>
+						</div>
+						
+			 <!-- Side Contents -->
+					<div class="col-xl-4">
+					    <div class="mt-5 mt-lg-0">
+					        <div class="card border shadow-none">
+					            <div class="card-header bg-transparent border-bottom py-3 px-4">
+					                <h5 class="font-size-16 mb-0">이달의 추천와인 <span class="float-end"></span></h5>
+					            </div>
+					            <div class="card-body p-4 pt-2">
+					                <div class="table-responsive">
+					                    <table class="table mb-0">
+					                        <tbody>
+					                            <tr th:each="search : ${searches}">
+					                                <td>
+					                                   <div class="image-wrapper">
+														    <img th:src="${search.imageUrl}" alt="Wine Image">
+														</div>
+					                                </td>
+					                                <td th:text="${search.wineName}"></td>
+					                            </tr>
+					                        </tbody>
+					                    </table>
+					                </div>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+			    <!-- end row -->
+	           </div>  
+	           
+	     </div>
+	        
+
+	<!-- JavaScript Libraries -->
+	    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+	    <script src="/lib/wow/wow.min.js"></script>
+	    <script src="/lib/easing/easing.min.js"></script>
+	    <script src="/lib/waypoints/waypoints.min.js"></script>
+	    <script src="/lib/counterup/counterup.min.js"></script>
+	    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+	    <script src="/lib/tempusdominus/js/moment.min.js"></script>
+	    <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
+	    <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+	
+	    <!-- Template Javascript -->
+	    <script src="/js/main.js"></script>
+	    
+
+</body>
+</html>

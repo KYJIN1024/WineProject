@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+
+<head>
+	    <meta charset="utf-8">
+	    <title>Kowasa-한국와인 정보 커뮤니티 사이트</title>
+	    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+	    <meta content="" name="keywords">
+	    <meta content="" name="description">
+	
+	    <!-- Favicon -->
+	    <link href="img/favicon.ico" rel="icon">
+	
+	    <!-- Google Web Fonts -->
+	    <link rel="preconnect" href="https://fonts.googleapis.com">
+	    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&family=Ubuntu:wght@400;500&display=swap" rel="stylesheet"> 
+	
+	    <!-- Icon Font Stylesheet -->
+	    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+	    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+	
+	    <!-- Libraries Stylesheet -->
+	    <link href="/lib/animate/animate.min.css" rel="stylesheet">
+	    <link href="/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+	    <link href="/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+	
+	    <!-- Customized Bootstrap Stylesheet -->
+	    <link href="/css/bootstrap.min.css" rel="stylesheet">
+	    
+	     <!-- Template Stylesheet -->
+	    <link href="/css/style.css" rel="stylesheet">
+	    
+	    <!-- Template Stylesheet -->
+	    <link href="/css/communitystyle.css" rel="stylesheet">
+	    
+	    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+	    
+	      <!-- Spinner Start -->
+	    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+	        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+	            <span class="sr-only">Loading...</span>
+	        </div>
+	    </div>
+	    <!-- Spinner End -->
+	
+	    <!-- Navbar Start -->
+	    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+	        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+	            <h2 class="m-0 text-primary" style="font-family: 'Nanum Gothic', sans-serif;">
+		  <img src="/img/winelogo.jpg" alt="Image" width="50" height="50">
+		  KOWASA &nbsp;&nbsp; <h5>한국와인 정보 커뮤니티</h5>
+		</h2>
+	        </a>
+	        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+	            <span class="navbar-toggler-icon"></span>
+	        </button>
+	        <div class="collapse navbar-collapse" id="navbarCollapse">
+	            <div class="navbar-nav ms-auto p-4 p-lg-0">
+	                <a href="/" class="nav-item nav-link active">Home</a>
+	                <div class="nav-item dropdown">
+	                    <a href="/search" class="nav-item nav-link active">와인검색</a>
+	                    
+	                </div>
+	                <div class="nav-item dropdown">
+	                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">커뮤니티</a>
+	                    <div class="dropdown-menu fade-up m-0">
+	                        <a href="/community/freeboard/list" class="dropdown-item">자유게시판</a>
+	                        <a href="/community/eventboard/list" class="dropdown-item">행사정보</a>
+	                    </div>
+	                </div>
+	                <div class="nav-item dropdown">
+	                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">와인파트너스</a>
+	                    <div class="dropdown-menu fade-up m-0">
+	                        <a href="/partners/producer/list" class="dropdown-item">생산자</a>
+	                        <a href="/partners/shop/list" class="dropdown-item">샵/레스토랑 정보</a>
+	                        <a href="/partners/job/list" class="dropdown-item">구인구직</a>
+	                    </div>
+	                </div>
+	            </div>
+	           	<a href="/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" th:if="${#authorization.expression('isAnonymous()')}">
+					    Login<i class="fa fa-arrow-right ms-3"></i>
+					</a>
+					<div class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" th:if="${#authorization.expression('isAuthenticated()')}">
+					    <p style="margin-top: 10px;"><span th:text="${#session.getAttribute('username')}"></span>님, 환영합니다.</p>
+					    <button style="padding: 2px 5px;" onclick="location.href='/logout'">로그아웃</button>
+					    <button style="padding: 2px 5px;" onclick="location.href='/mypage'">마이페이지</button>
+					</div>
+	     	   </div>
+	    </nav>
+	    <!-- Navbar End -->
+	     <!-- Back to Top -->
+	    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</head>
+
+<body>
+	<div class="layout">
+		<form th:action="@{/partners/job/update/{id}(id=${jobboard.jobboardid})}" method="post">	
+			<div class="sub">
+				제목&nbsp; <input type="text" name="jobboardtitle" style="font-size: 16px;"> &nbsp;&nbsp; 
+				주소&nbsp; <input type="text" th:value="${register}" name="jobboardregister" style="font-size: 16px;"> &nbsp;&nbsp;<br/>
+				홈페이지&nbsp;  <input type="text" th:value="${link}" name="jobboardlink" style="font-size: 16px;">  &nbsp;&nbsp;
+				전화번호&nbsp;  <input type="text" th:value="${phone}" name="jobboardphone" style="font-size: 16px;"> 
+			</div>
+			<!-- Textarea with id for CKEDITOR -->
+			<textarea name="jobboardcontent" id="editor20" th:text="${jobboard.jobboardcontent}"></textarea>
+			<input type="submit" value ="글 수정">
+		</form>
+	</div>
+
+
+
+	 <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/wow/wow.min.js"></script>
+    <script src="/lib/easing/easing.min.js"></script>
+    <script src="/lib/waypoints/waypoints.min.js"></script>
+    <script src="/lib/counterup/counterup.min.js"></script>
+    <script src="/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
+    <script>
+        CKEDITOR.replace('editor20', {
+            filebrowserUploadUrl: '/partners/shopboard/uploadImage', // 이미지 업로드 처리를 위한 백엔드 URL
+            filebrowserUploadMethod: 'form',
+            height: 600
+        });
+    </script>
+	
+
+
+</body>
+</html>
