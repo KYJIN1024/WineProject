@@ -45,19 +45,19 @@ public class EventboardController {
 	    model.addAttribute("endpage", endpage);
 	    model.addAttribute("list", list);
 	    
-	    return "/community/commeventboardlist";
+	    return "community/commeventboardlist";
 	}
 	
 	@GetMapping("/write")
 	public String commeventBoardWriteForm(Model model) {
 	    model.addAttribute("user", "코와사 편집팀");
-	    return "/community/commeventboardwrite";
+	    return "community/commeventboardwrite";
 	}
 	
 	@PostMapping("/writedo")
 	public String commeventBoardWritedo(EventBoardEntity evbEntity) throws Exception {
 	 evbService.EventBoardWrite(evbEntity);
-	  return "redirect:/community/eventboard/list";
+	  return "redirect:community/eventboard/list";
 	}
 	
 	@GetMapping("/view")
@@ -82,19 +82,19 @@ public class EventboardController {
 	    System.out.println("Top Boards Size: " + topBoards.size());
         model.addAttribute("topBoards", topBoards);
 
-	    return "/community/commeventboardview";
+	    return "community/commeventboardview";
 	}
 	
 	@GetMapping("/delete")
 	public String eventboardDelete(@RequestParam Integer id) {
 	    evbService.EventBoardDelete(id);
-	    return "redirect:/community/eventboard/list";
+	    return "redirect:community/eventboard/list";
 	}
 	
 	@GetMapping("/modify/{id}")
 	public String eventboardModify(@PathVariable("id") Integer id, Model model) {
 	    model.addAttribute("eventboard", evbService.eventBoardView(id));
-	    return "/community/commeventboardmodify";
+	    return "community/commeventboardmodify";
 	}
 	
 	@PostMapping("/update/{id}")
@@ -102,7 +102,7 @@ public class EventboardController {
 	    EventBoardEntity boardTemp = evbService.eventBoardView(id);
 	    boardTemp.setEvboardevname(evbEntity.getEvboardevname());
 	    evbService.EventBoardUpdate(boardTemp);
-	    return "redirect:/community/eventboard/list";
+	    return "redirect:community/eventboard/list";
 	}
 	
 	@PostMapping("/uploadImage")

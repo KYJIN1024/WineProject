@@ -61,7 +61,7 @@ public class FreeboardController {
 	        model.addAttribute("topBoards", topBoards);
 			
 	        
-			return "/community/commfreeboardlist";
+			return "community/commfreeboardlist";
 	    }
 	   
 	@GetMapping("/write")
@@ -73,7 +73,7 @@ public class FreeboardController {
 	       model.addAttribute("topBoards", topBoards);
 		   
 		   
-		   return "/community/commfreeboardwrite";
+		   return "community/commfreeboardwrite";
 	   }
 
 	@PostMapping("/writedo")
@@ -85,7 +85,7 @@ public class FreeboardController {
 		frbEntity.setFrboardhits(0);
 		
 		frbService.FreeBoardWrite( frbEntity );
-		return "redirect:/community/freeboard/list";
+		return "redirect:community/freeboard/list";
 	   }
 
 	@GetMapping( "/view" ) 
@@ -119,14 +119,14 @@ public class FreeboardController {
 		    System.out.println("Top Boards Size: " + topBoards.size());
 	        model.addAttribute("topBoards", topBoards);
 			
-			return "/community/commfreeboardview";
+			return "community/commfreeboardview";
 		}
 
 	@GetMapping( "/delete" ) 
 		public String boardDelete( Integer id) {
 			
 			frbService.freeBoardDelete(id);
-			return "redirect:/community/freeboard/list";
+			return "redirect:community/freeboard/list";
 		}	
 
 
@@ -135,7 +135,7 @@ public class FreeboardController {
 			
 			
 			model.addAttribute("freeboard", frbService.freeBoardView(id));
-			return "/community/commfreeboardmodify";
+			return "community/commfreeboardmodify";
 		}
 
 	@PostMapping( "/update/{id}" ) 
@@ -150,7 +150,7 @@ public class FreeboardController {
 			
 			boardTemp.setTags(frbEntity.getTags());
 			frbService.FreeBoardWrite(boardTemp);
-			return "redirect:/community/freeboard/list";
+			return "redirect:community/freeboard/list";
 			
 
 		}
@@ -160,7 +160,7 @@ public class FreeboardController {
 	    FreeBoardEntity board = frbService.freeBoardView(frboardid);
 	    if (board == null) {
 	        // Handle error scenario (e.g., board not found)
-	        return "redirect:/community/freeboard/list";
+	        return "redirect:community/freeboard/list";
 	    }
 	    comment.setFreeBoard(board);
 	    
@@ -169,7 +169,7 @@ public class FreeboardController {
 	    comment.setTimestamp(LocalDateTime.now()); // Set the current time
 
 	    frbService.saveComment(comment);
-	    return "redirect:/community/freeboard/view?id=" + frboardid;
+	    return "redirect:community/freeboard/view?id=" + frboardid;
 	}
 
 	@PostMapping("/comment/{commentId}/update")
@@ -188,11 +188,11 @@ public class FreeboardController {
 	    CommentEntity comment = frbService.findCommentById(commentId).orElse(null);
 	    if (comment == null) {
 	        // Handle error scenario (e.g., comment not found)
-	        return "redirect:/community/freeboard/list";
+	        return "redirect:community/freeboard/list";
 	    }
 	    Integer boardId = comment.getFreeBoard().getFrboardid();
 	    frbService.deleteComment(commentId);
-	    return "redirect:/community/freeboard/view?id=" + boardId;
+	    return "redirect:community/freeboard/view?id=" + boardId;
 		}
 
 }
