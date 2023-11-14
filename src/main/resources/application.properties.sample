@@ -1,0 +1,40 @@
+# Database Configuration
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+spring.datasource.url=jdbc:mariadb://your-rds-endpoint.amazonaws.com/yourdbname
+spring.datasource.username=yourdbusername
+spring.datasource.password=yourdbpassword
+
+# Server Port
+server.port=8080
+
+# Mail Server Configuration
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=your-email@gmail.com
+spring.mail.password=your-email-password
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.timeout=5000
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+# Logging Levels
+logging.level.org.springframework.mail=ERROR
+logging.level.root=info
+logging.level.org.hibernate.SQL=info
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
+logging.level.com.yourproject=info
+logging.level.com.yourproject.controller=INFO
+
+# Hibernate & JPA Configurations
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MariaDBDialect
+
+# OAuth2 Configuration
+spring.security.oauth2.client.registration.google.client-id=your-google-client-id
+spring.security.oauth2.client.registration.google.client-secret=your-google-client-secret
+spring.security.oauth2.client.registration.google.redirect-uri=http://localhost:8080/login/oauth2/code/google
+spring.security.oauth2.client.registration.google.scope=profile,email
+
+# Thymeleaf Settings
+spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
