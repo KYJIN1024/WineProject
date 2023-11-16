@@ -32,7 +32,6 @@ public class EventboardController {
 	@Autowired
 	private EventBoardService evbService;
 	
-/////eventboard Controller
 	@GetMapping("/list")
 	public String commeventBoardList(Model model, @PageableDefault(page = 0, size = 8, sort = "evboardid", direction = Sort.Direction.DESC) Pageable pageable) {
 	    Page<EventBoardEntity> list = evbService.eventBoardList(pageable);

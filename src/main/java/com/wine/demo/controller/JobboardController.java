@@ -91,7 +91,7 @@ public class JobboardController {
 	    
 	    if (jobOpt.isPresent()) {
 	        model.addAttribute("jobboard", jobOpt.get());  
-	        return "/winepartners/partnersjobboardview";
+	        return "winepartners/partnersjobboardview";
 	    } else {
 	        // 게시글이 존재하지 않을 경우 처리 (예: 오류 페이지로 리디렉션)
 	        return "redirect:partners/job/list";
@@ -104,7 +104,7 @@ public class JobboardController {
 
 	    if (jobOpt.isPresent()) {
 	        model.addAttribute("jobboard", jobOpt.get());
-	        return "/winepartners/partnersjobboardmodify";
+	        return "winepartners/partnersjobboardmodify";
 	    } else {
 	        return "redirect:partners/job/list";
 	    }

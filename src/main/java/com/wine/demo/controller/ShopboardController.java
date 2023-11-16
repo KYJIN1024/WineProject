@@ -101,7 +101,7 @@ public class ShopboardController {
 	    
 	    if (shopOpt.isPresent()) {
 	        model.addAttribute("shopboard", shopOpt.get());  
-	        return "/winepartners/partnersshopboardview";
+	        return "winepartners/partnersshopboardview";
 	    } else {
 	        // 게시글이 존재하지 않을 경우 처리 (예: 오류 페이지로 리디렉션)
 	        return "redirect:partners/shop/list";
@@ -114,7 +114,7 @@ public class ShopboardController {
 
 	    if (shopOpt.isPresent()) {
 	        model.addAttribute("shopboard", shopOpt.get());
-	        return "/winepartners/partnersshopboardmodify";
+	        return "winepartners/partnersshopboardmodify";
 	    } else {
 	        return "redirect:partners/shop/list";
 	    }

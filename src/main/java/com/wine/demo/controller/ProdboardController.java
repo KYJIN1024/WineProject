@@ -74,7 +74,7 @@ public class ProdboardController {
 	    
 	    if (producerOpt.isPresent()) {
 	        model.addAttribute("producerboard", producerOpt.get());  
-	        return "/winepartners/partnersprodboardview";
+	        return "winepartners/partnersprodboardview";
 	    } else {
 	        // 게시글이 존재하지 않을 경우 처리 (예: 오류 페이지로 리디렉션)
 	        return "redirect:partners/producer/list";
@@ -154,7 +154,7 @@ public class ProdboardController {
 
 	    if (producerOpt.isPresent()) {
 	        model.addAttribute("producerboard", producerOpt.get());
-	        return "/winepartners/partnersprodboardmodify";
+	        return "winepartners/partnersprodboardmodify";
 	    } else {
 	        return "redirect:partners/producer/list";
 	    }
