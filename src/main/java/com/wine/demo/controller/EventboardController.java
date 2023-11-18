@@ -56,7 +56,7 @@ public class EventboardController {
 	@PostMapping("/writedo")
 	public String commeventBoardWritedo(EventBoardEntity evbEntity) throws Exception {
 	 evbService.EventBoardWrite(evbEntity);
-	  return "redirect:community/eventboard/list";
+	  return "redirect:list";
 	}
 	
 	@GetMapping("/view")
@@ -87,7 +87,7 @@ public class EventboardController {
 	@GetMapping("/delete")
 	public String eventboardDelete(@RequestParam Integer id) {
 	    evbService.EventBoardDelete(id);
-	    return "redirect:community/eventboard/list";
+	    return "redirect:list";
 	}
 	
 	@GetMapping("/modify/{id}")
@@ -101,7 +101,7 @@ public class EventboardController {
 	    EventBoardEntity boardTemp = evbService.eventBoardView(id);
 	    boardTemp.setEvboardevname(evbEntity.getEvboardevname());
 	    evbService.EventBoardUpdate(boardTemp);
-	    return "redirect:community/eventboard/list";
+	    return "redirect:/community/eventboard/view?id=" + id;
 	}
 	
 	@PostMapping("/uploadImage")

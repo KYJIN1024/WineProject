@@ -104,7 +104,7 @@ public class ShopboardController {
 	        return "winepartners/partnersshopboardview";
 	    } else {
 	        // 게시글이 존재하지 않을 경우 처리 (예: 오류 페이지로 리디렉션)
-	        return "redirect:partners/shop/list";
+	        return "redirect:/partners/shop/list";
 	    }
 	}
 
@@ -116,20 +116,20 @@ public class ShopboardController {
 	        model.addAttribute("shopboard", shopOpt.get());
 	        return "winepartners/partnersshopboardmodify";
 	    } else {
-	        return "redirect:partners/shop/list";
+	        return "redirect:/partners/shop/list";
 	    }
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateShopBoard(@PathVariable("id") Integer id, ShopEntity shopEntity) {
 	    shopBoardService.updateShopBoard(id, shopEntity);
-	    return "redirect:partners/shop/view/" + id;
+	    return "redirect:/partners/shop/view/" + id;
 	}
 	
 	@GetMapping("/delete")
 	public String deleteshopboard(@RequestParam Integer id) {
 		shopBoardService.deleteShopBoard(id);
-	    return "redirect:partners/shop/list";
+	    return "redirect:/partners/shop/list";
 	}
 	
 	@PostMapping("/like/{id}")

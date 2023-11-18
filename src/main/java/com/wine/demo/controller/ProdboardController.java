@@ -77,7 +77,7 @@ public class ProdboardController {
 	        return "winepartners/partnersprodboardview";
 	    } else {
 	        // 게시글이 존재하지 않을 경우 처리 (예: 오류 페이지로 리디렉션)
-	        return "redirect:partners/producer/list";
+	        return "redirect:/partners/producer/list";
 	    }
 	}
 	
@@ -92,7 +92,7 @@ public class ProdboardController {
 	@PostMapping("/writedo")
 	public String saveProducerBoard(ProducerEntity producerEntity) {
 	    producerBoardRepository.save(producerEntity);
-	    return "redirect:partners/producer/list"; // 게시글 저장 후 목록 페이지로 리디렉션
+	    return "redirect:/partners/producer/list"; // 게시글 저장 후 목록 페이지로 리디렉션
 	}
 	
 	
@@ -156,20 +156,20 @@ public class ProdboardController {
 	        model.addAttribute("producerboard", producerOpt.get());
 	        return "winepartners/partnersprodboardmodify";
 	    } else {
-	        return "redirect:partners/producer/list";
+	        return "redirect:/partners/producer/list";
 	    }
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateProducerBoard(@PathVariable("id") Integer id, ProducerEntity producerEntity) {
 	    producerBoardService.updateProducerBoard(id, producerEntity);
-	    return "redirect:partners/producer/view/" + id;
+	    return "redirect:/partners/producer/view/" + id;
 	}
 	
 	@GetMapping("/delete")
 	public String deleteproducerboard(@RequestParam Integer id) {
 	    pdbService.deleteProducerBoard(id);
-	    return "redirect:partners/producer/list";
+	    return "redirect:/partners/producer/list";
 	}
 	
 	

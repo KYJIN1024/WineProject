@@ -47,7 +47,12 @@ public class FreeBoardService {
 	
 	public void freeBoardDelete( Integer id ) {
 		
-		frbreBoardRepository.deleteById(id);
+		// 먼저 해당 게시글과 연관된 모든 댓글 삭제
+        commentRepository.deleteByFreeBoardId(id);
+
+        // 그 후 게시글 삭제
+        frbreBoardRepository.deleteById(id);
+    
 	}
 	
 	@Autowired

@@ -66,7 +66,7 @@ public class JobboardController {
 	@PostMapping("/writedo")
 	public String saveJobBoard(JobEntity jobEntity) {
 		jobBoardRepository.save(jobEntity);
-	    return "redirect:partners/job/list"; // 게시글 저장 후 목록 페이지로 리디렉션
+	    return "redirect:/partners/job/list"; // 게시글 저장 후 목록 페이지로 리디렉션
 	}
 	
 	
@@ -94,7 +94,7 @@ public class JobboardController {
 	        return "winepartners/partnersjobboardview";
 	    } else {
 	        // 게시글이 존재하지 않을 경우 처리 (예: 오류 페이지로 리디렉션)
-	        return "redirect:partners/job/list";
+	        return "redirect:/partners/job/list";
 	    }
 	}
 
@@ -106,20 +106,20 @@ public class JobboardController {
 	        model.addAttribute("jobboard", jobOpt.get());
 	        return "winepartners/partnersjobboardmodify";
 	    } else {
-	        return "redirect:partners/job/list";
+	        return "redirect:/partners/job/list";
 	    }
 	}
 
 	@PostMapping("/update/{id}")
 	public String updateJobBoard(@PathVariable("id") Integer id, JobEntity jobEntity) {
 		jobBoardService.updateJobBoard(id, jobEntity);
-	    return "redirect:partners/job/view/" + id;
+	    return "redirect:/partners/job/view/" + id;
 	}
 	
 	@GetMapping("/delete")
 	public String deletejobboard(@RequestParam Integer id) {
 		jobBoardService.deleteJobBoard(id);
-	    return "redirect:partners/job/list";
+	    return "redirect:/partners/job/list";
 	}
 	
 	
