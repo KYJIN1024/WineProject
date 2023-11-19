@@ -76,7 +76,7 @@ public class ShopboardController {
 	@PostMapping("/writedo")
 	public String saveShopBoard(ShopEntity shopEntity) {
 	    shopBoardRepository.save(shopEntity);
-	    return "redirect:partners/shop/list"; // 게시글 저장 후 목록 페이지로 리디렉션
+	    return "redirect:/partners/shop/list"; // 게시글 저장 후 목록 페이지로 리디렉션
 	}
 	
 	

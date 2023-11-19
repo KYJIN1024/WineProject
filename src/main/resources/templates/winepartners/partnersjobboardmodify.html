@@ -46,7 +46,7 @@
 	
 	    <!-- Navbar Start -->
 	    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-	        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+	        <a href="/" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
 	            <h2 class="m-0 text-primary" style="font-family: 'Nanum Gothic', sans-serif;">
 		  <img src="/img/winelogo.jpg" alt="Image" width="50" height="50">
 		  KOWASA &nbsp;&nbsp; <h5>한국와인 정보 커뮤니티</h5>
@@ -97,10 +97,11 @@
 	<div class="layout">
 		<form th:action="@{/partners/job/update/{id}(id=${jobboard.jobboardid})}" method="post">	
 			<div class="sub">
-				제목&nbsp; <input type="text" name="jobboardtitle" style="font-size: 16px;"> &nbsp;&nbsp; 
-				주소&nbsp; <input type="text" th:value="${register}" name="jobboardregister" style="font-size: 16px;"> &nbsp;&nbsp;<br/>
-				홈페이지&nbsp;  <input type="text" th:value="${link}" name="jobboardlink" style="font-size: 16px;">  &nbsp;&nbsp;
-				전화번호&nbsp;  <input type="text" th:value="${phone}" name="jobboardphone" style="font-size: 16px;"> 
+				제목&nbsp; <input type="text" name="jobboardtitle" style="font-size: 16px;"> &nbsp;&nbsp; <br/>
+				업종&nbsp; <input type="text" th:value="${sectors}" name="jobboardsectors" style="font-size: 16px;"> &nbsp;&nbsp;<br/>
+				기업명&nbsp; <input type="text" th:value="${companyname}" name="jobboardcompanyname" style="font-size: 16px;"> &nbsp;&nbsp;<br/>
+				지역&nbsp;  <input type="text" th:value="${region}" name="jobboardregion" style="font-size: 16px;">  &nbsp;&nbsp;<br/>
+				등록일&nbsp;  <input type="text" th:value="${registrationdate}" name="jobboardregistrationdate" style="font-size: 16px;"> 
 			</div>
 			<!-- Textarea with id for CKEDITOR -->
 			<textarea name="jobboardcontent" id="editor20" th:text="${jobboard.jobboardcontent}"></textarea>

@@ -69,7 +69,7 @@
 	                    <div class="dropdown-menu fade-up m-0">
 	                        <a href="/partners/producer/list" class="dropdown-item">생산자</a>
 	                        <a href="/partners/shop/list" class="dropdown-item">샵/레스토랑 정보</a>
-	                       <a href="/partners/job/list" class="dropdown-item">구인구직</a>
+	                       <a href="/partners/job/list" class="dropdown-item">구인</a>
 	                    </div>
 	                </div>
 	            </div>
@@ -87,11 +87,13 @@
 	     <!-- Back to Top -->
 	    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top" style="position: fixed; right: 20px; bottom: 20px;"><i class="bi bi-arrow-up"></i></a>
 
+		   <!-- 로그인 상태를 나타내는 요소 (로그인 상태일 경우에만 페이지에 포함) -->
+ 	   <div class="loggedin-status" style="display: none;"></div>
 			
 		<div class="container"><br/><br/>
 			    <div class="row"><br/><br/>
  			<!-- Main Contents -->
- 			 <h4>구인구직</h4><br/>
+ 			 <h4>구인</h4><br/>
 			        <div class="col-xl-8">
 			            <div class="card border shadow-none">
 			                <div class="card-body">
@@ -160,8 +162,8 @@
 			                <div class="col-sm-6">
 			                   <div class="text-sm-end mt-2 mt-sm-0">
 								    <button class="btn btn-success write-button">
-								        <i class="mdi mdi-wine-bottle me-1"></i> 글작성
-								    </button>
+									    <i class="mdi mdi-wine-bottle me-1"></i> 글작성
+									</button>
 								</div>
 			                </div> <!-- end col -->
 			            </div> <!-- end row-->

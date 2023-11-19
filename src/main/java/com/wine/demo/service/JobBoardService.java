@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.wine.demo.entity.JobEntity;
+import com.wine.demo.entity.ProducerEntity;
 import com.wine.demo.repository.JobBoardRepository;
 import com.wine.demo.repository.JobLikeRepository;
 import com.wine.demo.repository.UserRepository;
@@ -27,11 +28,24 @@ public class JobBoardService {
 	private JobLikeRepository jobLikeRepository;
 	 
 	@Autowired
-	 private UserRepository userRepository; 
+	private UserRepository userRepository; 
+	
+	
 
 	public List<JobEntity> getAllJobBoards() {
 	    return jobBoardRepository.findAll();
 	}
+	
+	public Optional<JobEntity> getjobBoardById(Integer id) {
+	        return jobBoardRepository.findById(id);
+	    }
+
+	public JobEntity saveJobBoard(JobEntity jobEntity) {
+	        return jobBoardRepository.save(jobEntity);
+	    }
+	
+	
+	
 
 	 public Page<JobEntity> getAllJobBoards(Pageable pageable) {
 	    return jobBoardRepository.findAll(pageable);
