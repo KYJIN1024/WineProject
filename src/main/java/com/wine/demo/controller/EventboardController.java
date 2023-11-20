@@ -118,7 +118,7 @@ public class EventboardController {
 
 	public String saveImage(MultipartFile file) throws IOException {
 	    String directoryPath = "/static/uploaded_images";  // 웹에서 접근 가능한 경로로 수정
-	    String absolutePath = "D:\\uploaded_files";  // 실제 서버에서 파일이 저장될 절대 경로
+	    String absolutePath = "/var/uploaded_files";
 
 	    File dir = new File(absolutePath);
 
