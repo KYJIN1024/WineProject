@@ -16,12 +16,14 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.wine.demo.entity.CommentEntity;
 import com.wine.demo.entity.FreeBoardEntity;
@@ -122,8 +124,8 @@ public class FreeboardController {
 			return "community/commfreeboardview";
 		}
 
-	@GetMapping( "/delete" ) 
-		public String boardDelete( Integer id) {
+	@PostMapping( "/delete" ) 
+	public String boardDelete( @RequestParam("id") Integer id) {
 			
 			frbService.freeBoardDelete(id);
 			return "redirect:list";
@@ -159,15 +161,14 @@ public class FreeboardController {
 	public String addComment(@PathVariable Integer frboardid, CommentEntity comment, Principal principal) {
 	    FreeBoardEntity board = frbService.freeBoardView(frboardid);
 	    if (board == null) {
-	        // Handle error scenario (e.g., board not found)
+	     
 	        return "redirect:/community/freeboard/list";
 	    }
 	    comment.setFreeBoard(board);
 	    
-	    // Set the writer and timestamp fields
-	    comment.setWriter(principal.getName()); // Get the currently logged-in username
-	    comment.setTimestamp(LocalDateTime.now()); // Set the current time
-
+	 
+	    comment.setWriter(principal.getName()); 
+	    comment.setTimestamp(LocalDateTime.now()); 
 	    frbService.saveComment(comment);
 	    return "redirect:/community/freeboard/view?id=" + frboardid;
 	}
@@ -183,11 +184,11 @@ public class FreeboardController {
 	    return ResponseEntity.ok().build(); // 성공적으로 업데이트한 경우 OK 상태 코드 반환
 	}
 
-	@GetMapping("/comment/{commentId}/delete")
+	@PostMapping("/comment/{commentId}/delete")
 	public String deleteComment(@PathVariable Long commentId) {
 	    CommentEntity comment = frbService.findCommentById(commentId).orElse(null);
 	    if (comment == null) {
-	        // Handle error scenario (e.g., comment not found)
+	   
 	        return "redirect:community/freeboard/list";
 	    }
 	    Integer boardId = comment.getFreeBoard().getFrboardid();

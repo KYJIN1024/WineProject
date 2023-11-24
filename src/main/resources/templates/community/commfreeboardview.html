@@ -97,6 +97,29 @@
 	            margin-left: auto; /* 사이드바를 오른쪽으로 이동 */
 	        }
 	    }
+	      .link-style, .inline-form button {
+		        margin-right: 10px;
+		        padding: 5px 15px; /* 패딩을 조정하여 높이를 맞출 수 있음 */
+		        border: 1px solid #007bff;
+		        color: #007bff;
+		        border-radius: 5px;
+		        background-color: transparent;
+		        text-decoration: none;
+		        transition: all 0.3s;
+		        line-height: normal; /* 라인 높이를 조정 */
+		        height: auto; /* 높이를 자동으로 설정 */
+		        display: inline-block; /* 인라인 블록 요소로 설정 */
+		    }
+
+	    .link-style:hover, .inline-form button:hover {
+	        background-color: #007bff;
+	        color: #fff;
+	    }
+	
+	    .inline-form {
+	        display: inline; /* 폼을 인라인으로 표시 */
+	    }
+		    
 		</style> 
 </head>
     
@@ -218,9 +241,12 @@
 	                    
 	                    <!-- 글 관리 버튼 -->
 	                    <div class="action-buttons">
-	                        <a th:href="@{/community/freeboard/delete(id=${freeboard.frboardid})}">글 삭제</a>
-	                        <a th:href="@{/community/freeboard/modify/{id}(id = ${freeboard.frboardid})}">글 수정</a>
-	                        <a th:href="@{/community/freeboard/list}">목록으로</a>
+	                       	<form action="/community/freeboard/delete" method="post" class="inline-form">
+							    <input type="hidden" name="id" th:value="${freeboard.frboardid}">
+							    <button type="submit" class="link-style">글 삭제</button>
+							</form>
+	                        <a th:href="@{/community/freeboard/modify/{id}(id = ${freeboard.frboardid})}" class="link-style">글 수정</a>
+	                        <a th:href="@{/community/freeboard/list}" class="link-style">목록으로</a>
 	                    </div>
 	                </article>
                 </div>
@@ -371,21 +397,19 @@
 			
 			    // AJAX를 사용하여 댓글 삭제 처리
 			    function deleteComment(commentId) {
-			        if (confirm('댓글을 삭제하시겠습니까?')) {
-			            // AJAX 요청으로 서버에 데이터 전송
-			            $.ajax({
-			                url: `/community/freeboard/comment/` + commentId + `/delete`,
-			                type: 'GET',
-			                success: function(response) {
-			                    // 성공 시 페이지에서 댓글 요소 제거
-			                    $('#comment-' + commentId).remove();
-			                },
-			                error: function(error) {
-			                    alert("댓글 삭제에 실패했습니다.");
-			                }
-			            });
-			        }
-			    }
+				    if (confirm('댓글을 삭제하시겠습니까?')) {
+				        $.ajax({
+				            url: `/community/freeboard/comment/` + commentId + `/delete`,
+				            type: 'POST',
+				            success: function(result) {
+				                $('#comment-' + commentId).remove();
+				            },
+				            error: function(error) {
+				                alert("댓글 삭제에 실패했습니다.");
+				            }
+				        });
+				    }
+				}
 			
 			    // 댓글 수정 및 삭제 버튼 이벤트 바인딩
 			    $(document).on('click', '.edit-comment', function() {
@@ -397,7 +421,9 @@
 			        var commentId = $(this).data('commentId');
 			        deleteComment(commentId);
 			    });
-			/*]]>*/
+				
+			   
+			    
 			</script>
 		
 </body>

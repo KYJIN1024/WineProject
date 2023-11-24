@@ -39,13 +39,13 @@ public class User implements UserDetails {
     @Column(length = 64)
     private String resetToken;
 
-    
+    private String role = "ROLE_USER";
 
     private boolean enabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+        return Collections.singleton(new SimpleGrantedAuthority(this.role));
     }
 
     @Override

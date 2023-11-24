@@ -156,6 +156,7 @@ public class UserController {
             user.setPassword(password);
             user.setEmail(email);
             user.setEnabled(true);
+            user.setRole("USER");
             userService.save(user, true);
             return "redirect:/login";
         } else {
