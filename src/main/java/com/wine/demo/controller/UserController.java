@@ -135,6 +135,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
+    @ResponseBody
     public String processRegister(@RequestBody Map<String, String> payload) {
         logger.info("Received registration request with payload: {}", payload);
         String username = payload.get("username");
