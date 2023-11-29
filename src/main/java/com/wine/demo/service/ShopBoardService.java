@@ -30,6 +30,7 @@ public class ShopBoardService {
 	 
 	@Autowired
 	 private UserRepository userRepository; 
+	
 
 	public List<ShopEntity> getAllShopBoards() {
 	    return shopBoardRepository.findAll();
@@ -67,11 +68,9 @@ public class ShopBoardService {
 	        if (shopOpt.isPresent()) {
 	            ShopEntity existingShop = shopOpt.get();
 	            
-	            // Update the fields that you want
 	            existingShop.setShopboardtitle(updatedShop.getShopboardtitle());
 	            existingShop.setShopboardcontent(updatedShop.getShopboardcontent());
-	            // ... (you can continue updating other fields if needed)
-
+	        
 	            shopBoardRepository.save(existingShop);
 	        } else {
 	            throw new RuntimeException("Shop not found!");

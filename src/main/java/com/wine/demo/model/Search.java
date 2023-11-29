@@ -11,9 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data               // Getter, Setter, toString, equalsAndHashCode를 모두 포함
-@NoArgsConstructor  // 기본 생성자
-@AllArgsConstructor // 모든 필드 값을 인자로 받는 생성자
+@Data               
+@NoArgsConstructor  
+@AllArgsConstructor 
 @Entity
 public class Search {
 	 @Id

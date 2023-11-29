@@ -19,7 +19,7 @@ public class VerificationCode implements Serializable {
     private String email;
     private String code;
 
-    // Default constructor for JPA
+
     public VerificationCode() {
     }
 

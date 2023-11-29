@@ -44,9 +44,6 @@ public class JobBoardService {
 	        return jobBoardRepository.save(jobEntity);
 	    }
 	
-	
-	
-
 	 public Page<JobEntity> getAllJobBoards(Pageable pageable) {
 	    return jobBoardRepository.findAll(pageable);
 	    }
@@ -79,11 +76,9 @@ public class JobBoardService {
 	        if (jobOpt.isPresent()) {
 	        	JobEntity existingJob = jobOpt.get();
 	            
-	            // Update the fields that you want
 	            existingJob.setJobboardtitle(updatedJob.getJobboardtitle());
 	            existingJob.setJobboardcontent(updatedJob.getJobboardcontent());
-	            // ... (you can continue updating other fields if needed)
-
+	           
 	            jobBoardRepository.save(existingJob);
 	        } else {
 	            throw new RuntimeException("Job not found!");

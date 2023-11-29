@@ -50,10 +50,10 @@ public class ShopboardController {
 	private UserService userService;
 	
 	
-	
+	// 게시판 목록 페이지 표시, Pagination을 사용하여 게시글을 페이지별로 나눔
 	@GetMapping("/list")
 	public String partnersShopBoardList(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
-	    PageRequest pageable = PageRequest.of(page, 8); // 10은 한 페이지에 보여줄 항목의 수입니다. 원하는대로 조정할 수 있습니다.
+	    PageRequest pageable = PageRequest.of(page, 8); 
 	    Page<ShopEntity> shopPage = shopBoardService.getAllShopBoards(pageable);
 	    
 	    model.addAttribute("shops", shopPage.getContent());
@@ -79,19 +79,20 @@ public class ShopboardController {
 	    return "redirect:/partners/shop/list"; // 게시글 저장 후 목록 페이지로 리디렉션
 	}
 	
-	
+	// 이미지 업로드
 	@PostMapping("/uploadImage")
 	public ResponseEntity<?> uploadImage(@RequestParam("upload") MultipartFile file) throws IOException {
 	    // 이미지 저장 로직
 	    String imageUrl = shopBoardService.saveImage(file); 
 
 	    return ResponseEntity.ok(Map.of(
-	        "uploaded", 1,  // CKEditor에서 요구하는 응답 형식을 준수합니다.
+	        "uploaded", 1,  
 	        "fileName", file.getOriginalFilename(),
 	        "url", imageUrl
 	    ));
 	}
 	
+	// 게시물 조회
 	@GetMapping("/view/{id}")
 	public String partnersShopBoardView(@PathVariable("id") Integer id, Model model) {
 	    Optional<ShopEntity> shopOpt = shopBoardRepository.findById(id);
@@ -103,11 +104,11 @@ public class ShopboardController {
 	        model.addAttribute("shopboard", shopOpt.get());  
 	        return "winepartners/partnersshopboardview";
 	    } else {
-	        // 게시글이 존재하지 않을 경우 처리 (예: 오류 페이지로 리디렉션)
 	        return "redirect:/partners/shop/list";
 	    }
 	}
-
+	
+	// 게시물 수정
 	@GetMapping("/modify/{id}")
 	public String showModifyForm(@PathVariable("id") Integer id, Model model) {
 	    Optional<ShopEntity> shopOpt = shopBoardRepository.findById(id);
@@ -119,34 +120,37 @@ public class ShopboardController {
 	        return "redirect:/partners/shop/list";
 	    }
 	}
-
+	
+	// 게시물 수정 처리
 	@PostMapping("/update/{id}")
 	public String updateShopBoard(@PathVariable("id") Integer id, ShopEntity shopEntity) {
 	    shopBoardService.updateShopBoard(id, shopEntity);
 	    return "redirect:/partners/shop/view/" + id;
 	}
 	
+	// 게시물 삭제
 	@GetMapping("/delete")
 	public String deleteshopboard(@RequestParam Integer id) {
 		shopBoardService.deleteShopBoard(id);
 	    return "redirect:/partners/shop/list";
 	}
 	
+	// 좋아요 버튼 처리 메서드
 	@PostMapping("/like/{id}")
 	@ResponseBody
 	public ResponseEntity<?> increaseLike(@PathVariable("id") Integer id) {
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated()) {
-	        System.out.println("User is not logged in.");
+	        //System.out.println("User is not logged in.");
 	        return ResponseEntity.badRequest().body("{\"error\": \"로그인이 필요합니다.\"}");
 	    }
 	    
 	    org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
-	    String username = principal.getUsername();  // 스프링 시큐리티에서 제공하는 User 객체에서 사용자 이름을 가져옵니다.
-	    System.out.println("Logged in user: " + username);
+	    String username = principal.getUsername();  
+	    //System.out.println("Logged in user: " + username);
 	    
 	    // DB에서 사용자의 전체 정보 가져오기
-	    User user = userService.findByUsername(username);  // 이 부분은 실제 구현에 따라 변경될 수 있습니다.
+	    User user = userService.findByUsername(username);  
 	    
 	    if (user == null) {
 	        return ResponseEntity.badRequest().body("{\"error\": \"로그인된 사용자 정보를 찾을 수 없습니다.\"}");
@@ -165,7 +169,7 @@ public class ShopboardController {
 	    shopBoardService.likeShop(user.getId(), id);
 	    ShopEntity shop = shopBoardRepository.findById(id).orElseThrow();
 	    
-	    // 좋아요가 성공적으로 적용되었다는 응답을 추가하거나 다른 적절한 응답을 반환해야 합니다.
+	
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("message", "좋아요가 성공적으로 적용되었습니다.");
 	    response.put("likes", shop.getShopboardlikes());  // 현재 좋아요 수 추가

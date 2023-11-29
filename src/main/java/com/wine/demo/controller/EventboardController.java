@@ -33,6 +33,7 @@ public class EventboardController {
 	@Autowired
 	private EventBoardService evbService;
 	
+	 // 행사 게시판 목록
 	@GetMapping("/list")
 	public String commeventBoardList(Model model, @PageableDefault(page = 0, size = 8, sort = "evboardid", direction = Sort.Direction.DESC) Pageable pageable) {
 	    Page<EventBoardEntity> list = evbService.eventBoardList(pageable);
@@ -48,55 +49,63 @@ public class EventboardController {
 	    return "community/commeventboardlist";
 	}
 	
+	 // 행사 게시글 작성
 	@GetMapping("/write")
 	public String commeventBoardWriteForm(Model model) {
 	    model.addAttribute("user", "코와사 편집팀");
 	    return "community/commeventboardwrite";
 	}
 	
+	// 행사 게시글을 저장
 	@PostMapping("/writedo")
 	public String commeventBoardWritedo(EventBoardEntity evbEntity) throws Exception {
 	 evbService.EventBoardWrite(evbEntity);
 	  return "redirect:list";
 	}
 	
+	 // 게시글 조회
 	@GetMapping("/view")
 	public String eventboardView(Model model, @RequestParam(required = false) Integer id) {
 	    // 1. id 파라미터가 없는 경우의 처리
 	    if (id == null) {
 	        model.addAttribute("error", "게시글 ID가 제공되지 않았습니다.");
-	        return "error";  // 에러 페이지로 리다이렉트 (실제 경로는 프로젝트에 따라 다를 수 있습니다.)
+	        return "error";  // 에러 페이지로 리다이렉트 
 	    }
-	    
+
+	    // 2. 게시글 조회
 	    EventBoardEntity evbTemp = evbService.eventBoardView(id);
 
-	    // 2. 게시글이 존재하지 않는 경우의 처리
+	    // 3. 게시글이 존재하지 않는 경우의 처리
 	    if (evbTemp == null) {
 	        model.addAttribute("error", "해당 ID의 게시글이 존재하지 않습니다.");
-	        return "error";  // 에러 페이지로 리다이렉트 (실제 경로는 프로젝트에 따라 다를 수 있습니다.)
+	        return "error";  
 	    }
 
 	    model.addAttribute("eventboard", evbTemp);
 	    
+	    // 4. 조회수 높은 게시글 목록 조회
 	    List<EventBoardEntity> topBoards = evbService.getTopEventBoardsByHits();
-	    System.out.println("Top Boards Size: " + topBoards.size());
-        model.addAttribute("topBoards", topBoards);
+	    //System.out.println("Top Boards Size: " + topBoards.size());
+	    model.addAttribute("topBoards", topBoards);
 
-	    return "community/commeventboardview";
+	    return "community/commeventboardview"; 
 	}
-	
+	    
+	// 게시글 삭제
 	@PostMapping("/delete")
 	public String eventboardDelete(@RequestParam Integer id) {
 	    evbService.EventBoardDelete(id);
 	    return "redirect:list";
 	}
 	
+	 // 게시글 수정
 	@GetMapping("/modify/{id}")
 	public String eventboardModify(@PathVariable("id") Integer id, Model model) {
 	    model.addAttribute("eventboard", evbService.eventBoardView(id));
 	    return "community/commeventboardmodify";
 	}
 	
+	 // 게시글 수정 처리 
 	@PostMapping("/update/{id}")
 	public String eventboardUpdate(@PathVariable("id") Integer id, EventBoardEntity evbEntity, MultipartFile file) throws Exception {
 	    EventBoardEntity boardTemp = evbService.eventBoardView(id);
@@ -105,20 +114,23 @@ public class EventboardController {
 	    return "redirect:/community/eventboard/view?id=" + id;
 	}
 	
+	// 이미지 업로드 처리 
 	@PostMapping("/uploadImage")
 	public ResponseEntity<?> uploadImage(@RequestParam("upload") MultipartFile file) throws IOException {
 	    // 이미지 저장 로직
 	    String imageUrl = evbService.saveImage(file); 
 
 	    return ResponseEntity.ok(Map.of(
-	        "uploaded", 1,  // CKEditor에서 요구하는 응답 형식을 준수합니다.
+	        "uploaded", 1,  
 	        "fileName", file.getOriginalFilename(),
 	        "url", imageUrl
 	    ));
 	}
-
+	
+	
+	// 이미지 저장 
 	public String saveImage(MultipartFile file) throws IOException {
-	    String directoryPath = "/static/uploaded_images";  // 웹에서 접근 가능한 경로로 수정
+	    String directoryPath = "/static/uploaded_images";  
 	    String absolutePath = "/var/uploaded_files";
 
 	    File dir = new File(absolutePath);
@@ -138,7 +150,7 @@ public class EventboardController {
 
 	    file.transferTo(targetFile);
 
-	    return directoryPath + "/" + savedFileName;  // 웹에서 접근 가능한 URL 형식으로 반환
+	    return directoryPath + "/" + savedFileName;  
 	}
 	
 }

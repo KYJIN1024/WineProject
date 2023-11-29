@@ -30,6 +30,7 @@ public class ProducerBoardService {
 	 
 	 @Autowired
 	    private UserRepository userRepository; 
+	 
 
     public List<ProducerEntity> getAllProducerBoards() {
         return producerBoardRepository.findAll();

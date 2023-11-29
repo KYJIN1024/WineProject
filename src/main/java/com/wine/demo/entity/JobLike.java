@@ -33,8 +33,6 @@ public class JobLike {
         this.job = job;
     }
     
-    
-    
 
     // Getter와 Setter 메서드
 

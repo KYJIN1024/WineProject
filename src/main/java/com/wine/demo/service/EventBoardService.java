@@ -23,22 +23,22 @@ public class EventBoardService {
     @Autowired
     private EventBoardRepository evboardRepository;
 
-    // eventboard 글 리스트 불러오기
+    // 글 리스트 불러오기
     public Page<EventBoardEntity> eventBoardList(Pageable pageable) {
         return evboardRepository.findAll(pageable);
     }
 
-    // eventboard 특정 게시글 불러오기
+    // 특정 게시글 불러오기
     public EventBoardEntity eventBoardView(Integer id) {
         return evboardRepository.findById(id).orElse(null);
     }
 
-    // eventboard 특정 게시글 삭제하기
+    // 특정 게시글 삭제하기
     public void EventBoardDelete(Integer id) {
         evboardRepository.deleteById(id);
     }
 
-    // eventboard 글 수정하기
+    // 글 수정하기
     public void EventBoardUpdate(EventBoardEntity entity) {
         evboardRepository.save(entity);
     }

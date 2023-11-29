@@ -37,9 +37,7 @@ public class UserInfoService {
     @PersistenceContext
     private EntityManager entityManager;
     
-
     
-
     private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {

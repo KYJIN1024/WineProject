@@ -48,8 +48,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 @Controller
 public class UserController {
-	
-	 private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	 
 	 @Autowired
 	 private UserDetailsService userDetailsService;
@@ -57,61 +55,45 @@ public class UserController {
 	 @Autowired
 	 private AuthenticationManager authenticationManager;
 	 
-    @Autowired
-    private UserService userService;
+     @Autowired
+     private UserService userService;
     
-    @GetMapping("/login")
-    public String showLoginPage(HttpServletRequest request, HttpSession session) {
-    	 String referrer = request.getHeader("Referer");
+     // 로그인페이지
+     @GetMapping("/login")
+     public String showLoginPage(HttpServletRequest request, HttpSession session) {
+     	 String referrer = request.getHeader("Referer");
     	    if (referrer != null && !referrer.contains("/login")) {
     	        session.setAttribute("prevPage", referrer);
     	    }
     	    return "login/login";
     	}
 
-    @PostMapping("/login")
-    public String loginUser(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
-        if (username == null || password == null) {
-            model.addAttribute("error", "Missing username or password");
-            return "login";
-        }
+     // 로그인 요청을 처리 
+     @PostMapping("/login")
+     public String loginUser(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
+         if (username == null || password == null) {
+             model.addAttribute("error", "사용자 이름 또는 비밀번호가 누락되었습니다.");
+             return "login";
+         }
 
-        try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            
-            if (authentication.isAuthenticated()) {
-                session.setAttribute("username", username);  
-                logger.info("User {} has been successfully authenticated.", username);  // Successful login message
-                
-             // 세션에서 이전 페이지 URL 가져오기
-                String prevPage = (String) session.getAttribute("prevPage");
-                session.removeAttribute("prevPage"); // 사용 후 세션에서 삭제
-                logger.info("Redirecting to previous page: {}", prevPage);
-                return "redirect:" + (prevPage != null ? prevPage : "/"); // 이전 페이지가 없는 경우 홈으로 리디렉션
-            } else {
-                model.addAttribute("error", "Invalid password");
-                return "login";
-            }
-        } catch (UsernameNotFoundException ex) {
-            logger.error("Failed to login. No user found with username: {}", username);
-            model.addAttribute("error", "User not found");
-            return "login";
-        } catch (BadCredentialsException ex) {
-            logger.error("Failed to login. Bad credentials: {}", ex.getMessage());
-            model.addAttribute("error", "Invalid password");
-            return "login";
-        } catch (Exception ex) {
-            logger.error("Failed to login. Unexpected error: {}", ex.getMessage());
-            model.addAttribute("error", "Unexpected error");
-            return "login";
-        }
-    }
+         if (userService.loginUser(username, password)) {
+             session.setAttribute("username", username);
+             String prevPage = (String) session.getAttribute("prevPage");
+             session.removeAttribute("prevPage");
+             return "redirect:" + (prevPage != null ? prevPage : "/");
+         } else {
+             model.addAttribute("error", "잘못된 사용자 이름 또는 비밀번호입니다.");
+             return "login";
+         }
+     }
 
+    // 회원가입 페이지
     @GetMapping("/register")
     public String register() {
         return "login/register";
     }
     
+    // id 중복확인
     @PostMapping("/checkUsername")
     @ResponseBody
     public ResponseEntity<Boolean> checkUsername(@RequestBody Map<String, String> payload) {
@@ -120,6 +102,7 @@ public class UserController {
         return new ResponseEntity<>(isAvailable, HttpStatus.OK);
     }
     
+    // 인증이메일 전송을 처리
     @PostMapping("/sendVerificationEmail")
     @ResponseBody
     public ResponseEntity<String> sendVerificationEmail(@RequestBody Map<String, String> payload) {
@@ -133,11 +116,12 @@ public class UserController {
         }
         return new ResponseEntity<>("이메일 전송 완료", HttpStatus.OK);
     }
-
+    
+    // 회원가입 요청을 처리
     @PostMapping("/register")
     @ResponseBody
     public String processRegister(@RequestBody Map<String, String> payload) {
-        logger.info("Received registration request with payload: {}", payload);
+
         String username = payload.get("username");
         String password = payload.get("password");
         String passwordConfirm = payload.get("passwordConfirm");
@@ -149,7 +133,6 @@ public class UserController {
         }
 
         VerificationCode code = userService.findVerificationCode(verificationCode, email);
-        logger.info("VerificationCode: {}", code);
 
         if (code != null) {
             User user = new User();
@@ -165,11 +148,13 @@ public class UserController {
         }
     }
     
+    // 아이디/비밀번호 찾기 페이지 
     @GetMapping("/findIdPw")
     public String showFindIdPwPage() {
         return "login/findIdPw";
     }
     
+    // 어이디 찾기를 처리하는 메서드
     @PostMapping("/findUsername")
     @ResponseBody
     public ResponseEntity<String> findUsername(@RequestParam Map<String, String> payload) {
@@ -178,7 +163,7 @@ public class UserController {
         if(user != null) {
             return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("해당아이디의 이메일주소를 찾을수 없습니다..", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("해당아이디의 이메일주소를 찾을수 없습니다.", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -188,6 +173,7 @@ public class UserController {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
     
+    // 비밀번호 재설정 요청을 처리하는 메서드
     @PostMapping("/resetPassword")
     public String handleResetPasswordRequest(@RequestParam String email, Model model) {
         User user = userService.findByEmail(email);
@@ -212,13 +198,14 @@ public class UserController {
         }
     }
     
+    //비밀번호 변경 페이지
     @GetMapping("/changePw")
     public String showChangePasswordPage(@RequestParam("token") String token, Model model) {
         User user = userService.getUserByPasswordResetToken(token);
         if (user != null) {
         	model.addAttribute("username", user.getUsername());
             model.addAttribute("token", token);
-            return "login/changePw"; // 비밀번호 재설정 페이지로 이동
+            return "login/changePw"; 
         } else {
             // 토큰이 유효하지 않거나 만료된 경우
             model.addAttribute("error", "비밀번호 재설정 요청이 유효하지 않습니다.");
@@ -243,6 +230,7 @@ public class UserController {
         }
     }
     
+    //변경완료 메세지 페이지 출력
     @GetMapping("/message")
     public String showMessage(Model model) {
         model.addAttribute("message", "비밀번호를 바꾸었습니다. 새로운 비밀번호로 로그인하세요.");
@@ -250,10 +238,5 @@ public class UserController {
         return "login/message"; 
     }
 
-    
-    
-    
-   
-    
 }
     

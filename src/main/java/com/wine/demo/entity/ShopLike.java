@@ -32,11 +32,6 @@ public class ShopLike {
         this.user = user;
         this.shop = shop;
     }
-    
-    
-    
-
-    // Getter와 Setter 메서드
 
     public Integer getId() {
         return id;

@@ -21,43 +21,36 @@ public class FreeBoardService {
 	@Autowired
 	private FreeBoardRepository frbreBoardRepository;
 	
+	@Autowired
+    private CommentRepository commentRepository;
+	
 
-	// freeboard(자유게시판) 글 작성하기
+	// 글 작성하기
 	public void FreeBoardWrite( FreeBoardEntity entity ) {
-		
 		frbreBoardRepository.save(entity);
 	}
 	
 
-	// freeboard(자유게시판) 글 리스트 불러오기
-	public Page< FreeBoardEntity > freeBoardList( Pageable pageable ){
-				
+	//  글 리스트 불러오기
+	public Page< FreeBoardEntity > freeBoardList( Pageable pageable ){	
 		return frbreBoardRepository.findAll( pageable );
 	}
 	
 
-	// freeboard(자유게시판) 특정 게시글 불러오기
+	// 글 불러오기
 	public FreeBoardEntity freeBoardView( Integer id ) {
-		
 		return frbreBoardRepository.findById( id ).get() ;
 	}
 	
-
-	// freeboard(자유게시판) 특정 게시글 삭제하기
-	
+	// 글 삭제하기
 	public void freeBoardDelete( Integer id ) {
-		
 		// 먼저 해당 게시글과 연관된 모든 댓글 삭제
         commentRepository.deleteByFreeBoardId(id);
-
         // 그 후 게시글 삭제
         frbreBoardRepository.deleteById(id);
-    
 	}
 	
-	@Autowired
-    private CommentRepository commentRepository;
-
+	// 댓글
 	 public CommentEntity saveComment(CommentEntity comment) {
 	        return commentRepository.save(comment);
 	    }

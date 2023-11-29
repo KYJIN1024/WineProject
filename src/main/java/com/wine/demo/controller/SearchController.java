@@ -18,23 +18,25 @@ public class SearchController {
 	
 	private final SearchRepository searchRepository;
 
-    // WineRepository를 주입하여 초기화
+   
     public SearchController(SearchRepository searchRepository) {
         this.searchRepository = searchRepository;
     }
 	
-	
+	// 와인검색 페이지 
 	@GetMapping("/search")
 	public String showSearchPage() {
 	    return "search/search";
 	}
 
+	//통합검색 
 	@GetMapping("/search/integrated")
 	@ResponseBody 
 	public List<Search> integratedSearch(@RequestParam String keyword) {
 	    return searchRepository.findByWineNameContaining(keyword);
 	}
-
+	
+	//상세검색 
 	@GetMapping("/search/detailed")
 	@ResponseBody 
 	public List<Search> detailedSearch(

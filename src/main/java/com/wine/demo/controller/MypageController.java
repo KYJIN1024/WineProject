@@ -39,7 +39,8 @@ public class MypageController {
     
     @Autowired
     private UserService userService;
-
+    
+    // 마이페이지 출력
     @GetMapping("/mypage")
     public String showLoginsuccessPage(HttpSession session, Model model) {
     	
@@ -52,7 +53,8 @@ public class MypageController {
     	 model.addAttribute("commentCount", commentCount);
         return "login/mypage";
     }
-
+    
+    // 비밀번호 변경 모달창 출력
     @GetMapping("/mypage-edit-modal")
     public String showEditPage(HttpSession session, Model model) {
         String email = (String) session.getAttribute("email");
@@ -60,32 +62,7 @@ public class MypageController {
         return "login/mypage-edit";
     }
     
-
-    @PostMapping("/update-email")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> updateEmail(@RequestBody Map<String, String> requestData) {
-        String email = requestData.get("email");
-
-        if (email == null || email.isEmpty()) {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("success", false);
-            errorResponse.put("message", "이메일이 비어있습니다.");
-            return ResponseEntity.status(400).body(errorResponse);
-        }
-
-        try {
-            userInfoService.updateEmail(email);
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("success", false);
-            errorResponse.put("message", "이메일 업데이트 중 오류 발생: " + e.getMessage());
-            return ResponseEntity.status(500).body(errorResponse);
-        }
-    }
-
+    //비밀번호 변경 처리 메서드
     @PostMapping("/update-password")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody Map<String, String> requestData) {
@@ -94,7 +71,7 @@ public class MypageController {
         if (newPassword == null || newPassword.isEmpty()) {
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
-            errorResponse.put("message", "비밀번호가 비어있습니다.");
+            errorResponse.put("message", "비밀번호가 입력되지않았습니다.");
             return ResponseEntity.status(400).body(errorResponse);
         }
 
@@ -111,6 +88,7 @@ public class MypageController {
         }
     }
     
+    // 사용자가 좋아요 버튼을 누른 와인생산자를 보여주는 메서드
     @GetMapping("/liked-producers")
     public String likedProducers(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -118,9 +96,10 @@ public class MypageController {
         
         List<ProducerEntity> producers = userService.getLikedProducers(username);
         model.addAttribute("producers", producers);
-        return "login/liked-producers"; // 이는 해당 게시글 목록을 보여주는 뷰 이름입니다.
+        return "login/liked-producers"; 
     }
     
+    // 사용자가 좋아요 버튼을 누른 샵&레스토랑을 보여주는 메서드
     @GetMapping("/liked-shops")
     public String likedShops(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -128,23 +107,24 @@ public class MypageController {
         
         List<ShopEntity> shops = userService.getLikedShops(username);
         model.addAttribute("shops", shops);
-        return "login/liked-shops"; // 이는 해당 게시글 목록을 보여주는 뷰 이름입니다.
+        return "login/liked-shops"; 
     }
     
+    // 사용자가 작성한 게시글 목록을 반환하는 메서드
     @GetMapping("/user-posts")
     @ResponseBody
     public List<FreeBoardEntity> getUserPosts(HttpSession session) {
         String username = (String) session.getAttribute("username");
         return userInfoService.getUserPosts(username);
     }
-
+    
+    // 사용자가 작성한 댓글 목록을 반환하는 메서드
     @GetMapping("/user-comments")
     @ResponseBody
     public List<CommentEntity> getUserComments(HttpSession session) {
     	 	String username = (String) session.getAttribute("username");
     	    List<CommentEntity> userComments = userInfoService.getUserComments(username);
-    	    // 로그를 통해 댓글 데이터 확인
-    	    System.out.println(userComments);
+
     	    return userComments;
     }
     

@@ -1,7 +1,5 @@
 package com.wine.demo.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +15,7 @@ import com.wine.demo.repository.ShopBoardRepository;
 @Controller
 public class MainController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
-	
-
-	 @Autowired
+	 	@Autowired
 	    private SearchRepository searchRepository;
 	    
 	    @Autowired
@@ -42,18 +37,16 @@ public class MainController {
     @GetMapping("/")
     public String main(Model model) {
     	
+    	// 각 레포지토리에서 데이터의 개수를 카운트
     	long wineCount = searchRepository.count();
         long communityCount = freeboardRepository.count() + eventboardRepository.count();
         long partnersCount = producerRepository.count() + jobRepository.count() + shopRepository.count();
        
-        
+        // 모델에 데이터 개수를 속성으로 추가
         model.addAttribute("wineCount", wineCount);
         model.addAttribute("communityCount", communityCount);
         model.addAttribute("partnersCount", partnersCount);
-    	
-    	
-    	
-    	
+
         return "index";
     }
 }

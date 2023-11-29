@@ -49,7 +49,7 @@ public class ProdboardController {
 	@Autowired
 	private UserService userService;
 	
-	
+	// 게시판 목록 페이지 표시, Pagination을 사용하여 게시글을 페이지별로 나눔
 	@GetMapping("/list")
 	public String partnersProdBoardList(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
 	    PageRequest pageable = PageRequest.of(page, 8); // 10은 한 페이지에 보여줄 항목의 수입니다. 원하는대로 조정할 수 있습니다.
@@ -61,10 +61,10 @@ public class ProdboardController {
 	    List<Search> searches = searchService.findDistinctByManufacturerAndRegion();
 	    model.addAttribute("searches", searches);
 
-
 	    return "winepartners/partnersprodboardlist";
 	}
 	
+	// 게시글 조회
 	@GetMapping("/view/{id}")
 	public String partnersProdBoardView(@PathVariable("id") Integer id, Model model) {
 	    Optional<ProducerEntity> producerOpt = producerBoardRepository.findById(id);
@@ -76,13 +76,12 @@ public class ProdboardController {
 	        model.addAttribute("producerboard", producerOpt.get());  
 	        return "winepartners/partnersprodboardview";
 	    } else {
-	        // 게시글이 존재하지 않을 경우 처리 (예: 오류 페이지로 리디렉션)
 	        return "redirect:/partners/producer/list";
 	    }
 	}
 	
 	
-	// 게시글 작성 페이지를 보여주는 메서드
+	// 게시글 작성 
 	@GetMapping("/write")
 	public String showWriteForm() {
 	    return "winepartners/partnersprodboardwrite";
@@ -92,37 +91,38 @@ public class ProdboardController {
 	@PostMapping("/writedo")
 	public String saveProducerBoard(ProducerEntity producerEntity) {
 	    producerBoardRepository.save(producerEntity);
-	    return "redirect:/partners/producer/list"; // 게시글 저장 후 목록 페이지로 리디렉션
+	    return "redirect:/partners/producer/list"; 
 	}
 	
-	
+	// 이미지 업로드
 	@PostMapping("/uploadImage")
 	public ResponseEntity<?> uploadImage(@RequestParam("upload") MultipartFile file) throws IOException {
 	    // 이미지 저장 로직
 	    String imageUrl = pdbService.saveImage(file); 
 
 	    return ResponseEntity.ok(Map.of(
-	        "uploaded", 1,  // CKEditor에서 요구하는 응답 형식을 준수합니다.
+	        "uploaded", 1,  
 	        "fileName", file.getOriginalFilename(),
 	        "url", imageUrl
 	    ));
 	}
-
+	
+	//좋아요버튼 메서드
 	@PostMapping("/like/{id}")
 	@ResponseBody
 	public ResponseEntity<?> increaseLike(@PathVariable("id") Integer id) {
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if (authentication == null || !authentication.isAuthenticated()) {
-	        System.out.println("User is not logged in.");
+	        //System.out.println("User is not logged in.");
 	        return ResponseEntity.badRequest().body("{\"error\": \"로그인이 필요합니다.\"}");
 	    }
 	    
 	    org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
-	    String username = principal.getUsername();  // 스프링 시큐리티에서 제공하는 User 객체에서 사용자 이름을 가져옵니다.
-	    System.out.println("Logged in user: " + username);
+	    String username = principal.getUsername();  
+	   // System.out.println("Logged in user: " + username);
 	    
 	    // DB에서 사용자의 전체 정보 가져오기
-	    User user = userService.findByUsername(username);  // 이 부분은 실제 구현에 따라 변경될 수 있습니다.
+	    User user = userService.findByUsername(username); 
 	    
 	    if (user == null) {
 	        return ResponseEntity.badRequest().body("{\"error\": \"로그인된 사용자 정보를 찾을 수 없습니다.\"}");
@@ -141,13 +141,14 @@ public class ProdboardController {
 	    producerBoardService.likeProducer(user.getId(), id);
 	    ProducerEntity producer = producerBoardRepository.findById(id).orElseThrow();
 	    
-	    // 좋아요가 성공적으로 적용되었다는 응답을 추가하거나 다른 적절한 응답을 반환해야 합니다.
+	    // 좋아요가 성공적으로 적용되었다는 응답 반환
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("message", "좋아요가 성공적으로 적용되었습니다.");
-	    response.put("likes", producer.getPdboardlikes());  // 현재 좋아요 수 추가
+	    response.put("likes", producer.getPdboardlikes()); 
 	    return ResponseEntity.ok(response);
 	}
 	
+	// 게시글 수정
 	@GetMapping("/modify/{id}")
 	public String showModifyForm(@PathVariable("id") Integer id, Model model) {
 	    Optional<ProducerEntity> producerOpt = producerBoardRepository.findById(id);
@@ -160,18 +161,19 @@ public class ProdboardController {
 	    }
 	}
 
+	// 게시글 수정 처리
 	@PostMapping("/update/{id}")
 	public String updateProducerBoard(@PathVariable("id") Integer id, ProducerEntity producerEntity) {
 	    producerBoardService.updateProducerBoard(id, producerEntity);
 	    return "redirect:/partners/producer/view/" + id;
 	}
 	
+	// 게시글 삭제
 	@GetMapping("/delete")
 	public String deleteproducerboard(@RequestParam Integer id) {
 	    pdbService.deleteProducerBoard(id);
 	    return "redirect:/partners/producer/list";
 	}
-	
 	
 	
 }

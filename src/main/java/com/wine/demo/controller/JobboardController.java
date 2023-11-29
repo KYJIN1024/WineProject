@@ -40,10 +40,10 @@ public class JobboardController {
 	@Autowired
 	private SearchService searchService;
 	
-	
+	// 게시판 목록 페이지 표시, Pagination을 사용하여 게시글을 페이지별로 나눔
 	@GetMapping("/list")
 	public String partnersJobBoardList(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
-	    PageRequest pageable = PageRequest.of(page, 8); // 10은 한 페이지에 보여줄 항목의 수입니다. 원하는대로 조정할 수 있습니다.
+	    PageRequest pageable = PageRequest.of(page, 8); 
 	    Page<JobEntity> jobPage = jobBoardService.getAllJobBoards(pageable);
 	    
 	    model.addAttribute("jobs", jobPage.getContent());
@@ -56,32 +56,33 @@ public class JobboardController {
 	    return "winepartners/partnersjobboardlist";
 	}
 	
-	// 게시글 작성 페이지를 보여주는 메서드
+	// 게시글 작성
 	@GetMapping("/write")
 	public String showWriteForm() {
 	    return "winepartners/partnersjobboardwrite";
 	}
 
-	// 게시글 데이터를 처리하고 데이터베이스에 저장하는 메서드
+	// 게시글 데이터를 처리하고 데이터베이스에 저장
 	@PostMapping("/writedo")
 	public String saveJobBoard(JobEntity jobEntity) {
 		jobBoardRepository.save(jobEntity);
 	    return "redirect:/partners/job/list"; // 게시글 저장 후 목록 페이지로 리디렉션
 	}
 	
-	
+	//이미지 업로드 처리
 	@PostMapping("/uploadImage")
 	public ResponseEntity<?> uploadImage(@RequestParam("upload") MultipartFile file) throws IOException {
 	    // 이미지 저장 로직
 	    String imageUrl = jobBoardService.saveImage(file); 
 
 	    return ResponseEntity.ok(Map.of(
-	        "uploaded", 1,  // CKEditor에서 요구하는 응답 형식을 준수합니다.
+	        "uploaded", 1,  
 	        "fileName", file.getOriginalFilename(),
 	        "url", imageUrl
 	    ));
 	}
 	
+	// 게시글 조회
 	@GetMapping("/view/{id}")
 	public String partnersJobBoardView(@PathVariable("id") Integer id, Model model) {
 	    Optional<JobEntity> jobOpt = jobBoardRepository.findById(id);
@@ -93,11 +94,12 @@ public class JobboardController {
 	        model.addAttribute("jobboard", jobOpt.get());  
 	        return "winepartners/partnersjobboardview";
 	    } else {
-	        // 게시글이 존재하지 않을 경우 처리 (예: 오류 페이지로 리디렉션)
+	        // 게시글이 존재하지 않을 경우 처리 
 	        return "redirect:/partners/job/list";
 	    }
 	}
-
+	
+	// 게시글 수정
 	@GetMapping("/modify/{id}")
 	public String showModifyForm(@PathVariable("id") Integer id, Model model) {
 	    Optional<JobEntity> jobOpt = jobBoardRepository.findById(id);
@@ -110,20 +112,19 @@ public class JobboardController {
 	    }
 	}
 
+	// 게시글 수정 처리
 	@PostMapping("/update/{id}")
 	public String updateJobBoard(@PathVariable("id") Integer id, JobEntity jobEntity) {
 		jobBoardService.updateJobBoard(id, jobEntity);
 	    return "redirect:/partners/job/view/" + id;
 	}
 	
+	// 게시글 삭제
 	@GetMapping("/delete")
 	public String deletejobboard(@RequestParam Integer id) {
 		jobBoardService.deleteJobBoard(id);
 	    return "redirect:/partners/job/list";
 	}
-	
-	
-	
 	
 	
 }

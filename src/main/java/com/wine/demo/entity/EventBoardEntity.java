@@ -48,6 +48,7 @@ public class EventBoardEntity {
     @Column(name = "file_path")
     private String filePath; 
     
+    // 게시글의 첫 번째 이미지 URL을 추출
     public String getFirstImageUrl() {
     	if (this.evboardevcontent == null || this.evboardevcontent.trim().isEmpty()) 
             return null;
@@ -60,7 +61,8 @@ public class EventBoardEntity {
         }
         return null;  // 이미지 URL이 없는 경우
     }
-
+    
+    // HTML 태그를 제외한 순수 텍스트 내용을 반환
     public String getPlainTextContent() {
         if (this.evboardevcontent == null) return "";
         
@@ -70,6 +72,7 @@ public class EventBoardEntity {
         return plainText.length() > 40 ? plainText.substring(0, 40) + "..." : plainText;
     }
     
+    // 생성 시간을 "yyyy-MM-dd" 형식으로 포맷팅하여 반환
     public String getFormattedCreationTime() {
         if (this.evboardcreatetime == null) return "";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

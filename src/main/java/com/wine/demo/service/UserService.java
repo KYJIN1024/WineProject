@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -65,8 +67,21 @@ public class UserService {
 
     @Autowired
     private JavaMailSender mailSender;
-
     
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    
+    
+    // 로그인 처리를 담당하는 메서드
+    public boolean loginUser(String username, String password) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password));
+            return authentication.isAuthenticated();
+        } catch (UsernameNotFoundException | BadCredentialsException ex) {
+            return false;
+        }
+    }
 
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -121,12 +136,12 @@ public class UserService {
 
             emailService.sendSimpleMessage(email, "인증 코드", message);
 
-            logger.info("Sent verification email to {}", email);
+           // logger.info("Sent verification email to {}", email);
         } catch (MailException e) {
-            logger.error("Failed to send verification email to {}", email, e);
+           // logger.error("Failed to send verification email to {}", email, e);
             throw e;
         } catch (Exception e) {
-            logger.error("An unexpected error occurred when trying to send verification email to {}", email, e);
+            //logger.error("An unexpected error occurred when trying to send verification email to {}", email, e);
             throw e;
         }
     }
@@ -237,7 +252,7 @@ public class UserService {
         return userRepository.findByResetToken(token);
     }
     
- // 사용자의 비밀번호를 변경하는 메서드
+    // 사용자의 비밀번호를 변경하는 메서드
     public void changeUserPassword(User user, String newPassword) {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);

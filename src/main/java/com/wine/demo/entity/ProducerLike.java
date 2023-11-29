@@ -31,12 +31,7 @@ public class ProducerLike {
     public ProducerLike(User user, ProducerEntity producer) {
         this.user = user;
         this.producer = producer;
-    }
-    
-    
-    
-
-    // Getter와 Setter 메서드
+    }  
 
     public Integer getId() {
         return id;

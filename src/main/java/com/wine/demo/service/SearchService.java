@@ -18,8 +18,6 @@ public class SearchService {
     private String lastShownManufacturer = null;
     private String lastShownRegion = null;
 
-    
-    
 
     public SearchService(SearchRepository searchRepository) {
         this.searchRepository = searchRepository;

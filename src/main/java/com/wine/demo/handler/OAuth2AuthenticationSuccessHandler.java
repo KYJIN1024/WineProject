@@ -26,7 +26,7 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
         String username = token.getPrincipal().getAttribute("name");
         request.getSession().setAttribute("username", username);
-        logger.info("Username set in session: {}", username);
+        //logger.info("Username set in session: {}", username);
         response.sendRedirect("/");
     }
 }
