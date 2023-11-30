@@ -43,11 +43,13 @@ public class EventBoardService {
         evboardRepository.save(entity);
     }
 
+    // 글 작성
     public void EventBoardWrite(EventBoardEntity evbEntity) {
        
         evboardRepository.save(evbEntity);
     }
     
+    // 이미지 저장
     public String saveImage(MultipartFile file) throws IOException {
         String directoryPath = "D:\\uploaded_files";
         File dir = new File(directoryPath);
@@ -70,11 +72,13 @@ public class EventBoardService {
         return directoryPath + "\\" + savedFileName;
     }
     
+    // 태그 
     public static String stripHtmlTags(String html) {
         if (html == null) return "";
         return html.replaceAll("<[^>]*>", "");
     }
-
+    
+    // 조회수가 높은 상위 5개의 게시글 출력 메서드
     public List<EventBoardEntity> getTopEventBoardsByHits() {
         return evboardRepository.findTop5ByOrderByEvboardhitsDesc();
     }

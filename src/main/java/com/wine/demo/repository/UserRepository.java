@@ -5,7 +5,7 @@ import com.wine.demo.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 	
-	 // 사용자 이름으로 사용자를 찾는 메서드
+	// 사용자 이름으로 사용자를 찾는 메서드
     User findByUsername(String username);
     // 이메일로 사용자를 찾는 메서드
     User findByEmail(String email);

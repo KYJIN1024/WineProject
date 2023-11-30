@@ -42,6 +42,8 @@ import com.wine.demo.repository.VerificationCodeRepository;
 public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    
+    // 비밀번호 암호화를 위한 PasswordEncoder 인스턴스
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
@@ -72,7 +74,7 @@ public class UserService {
     private AuthenticationManager authenticationManager;
     
     
-    // 로그인 처리를 담당하는 메서드
+    // 로그인 처리를 담당하는 메서드  사용자 이름과 비밀번호로 로그인을 시도하고, 인증 결과를 반환합니다.
     public boolean loginUser(String username, String password) {
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -82,27 +84,32 @@ public class UserService {
             return false;
         }
     }
-
+    
+    // 사용자 이름으로 사용자 정보를 조회합니다.
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-
+    
+    //사용자 이메일로 사용자 정보를 조회합니다.
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-
+    
+    // 사용자 이름이 사용 가능한지 확인합니다.
     public boolean checkUsernameAvailability(String username) {
         User user = userRepository.findByUsername(username);
         return user == null;
     }
 
+    // 새로운 사용자를 저장하거나 기존 사용자 정보를 업데이트합니다.
     public void save(User user, boolean encodePassword) {
         if (encodePassword) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         userRepository.save(user);
     }
-
+    
+    // 사용자의 현재 비밀번호가 맞는지 확인합니다.
     public boolean checkCurrentPassword(String currentPassword) {
         User user = getAuthenticatedUser();
         if (user == null) {
@@ -111,6 +118,7 @@ public class UserService {
         return passwordEncoder.matches(currentPassword, user.getPassword());
     }
 
+    // 현재 인증된 사용자를 가져옵니다.
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -118,13 +126,15 @@ public class UserService {
         }
         return userRepository.findByUsername(authentication.getName());
     }
-
+    
+    // 인증 코드를 랜덤하게 생성합니다.
     private String generateVerificationCode() {
         Random random = new Random();
         int code = 100000 + random.nextInt(900000);
         return String.valueOf(code);
     }
-
+    
+    //  인증 이메일을 발송합니다.
     public void sendVerificationEmail(String email) {
         try {    
             String verificationCode = generateVerificationCode();
@@ -146,10 +156,12 @@ public class UserService {
         }
     }
 
+    // 인증 코드를 검증하여 해당 인증 코드 엔터티를 반환합니다.
     public VerificationCode findVerificationCode(String code, String email) {
         return verificationCodeRepository.findByCodeAndEmail(code, email);
     }
     
+    // 사용자 정보를 업데이트 합니다.
     public void updateUser(String username, String newEmail, String currentPassword, String newPassword, String verificationCode) {
         User user = this.findByUsername(username);
         if (user == null) {
@@ -171,6 +183,7 @@ public class UserService {
         this.userRepository.save(user);
     }
     
+    // 과거 날짜/시간으로부터 지금까지의 경과 시간을 문자열로 반환합니다.
     public static String getTimeAgo(LocalDateTime past) {
         Duration duration = Duration.between(past, LocalDateTime.now());
         long seconds = duration.getSeconds();
@@ -185,6 +198,7 @@ public class UserService {
         }
     }
     
+    // 유저가 좋아요버튼을 누른 생산자 목록을 반환합니다.
     public List<ProducerEntity> getLikedProducers(String username) {
         User user = findByUsername(username);
         if (user == null) {
@@ -194,6 +208,7 @@ public class UserService {
         return producerlikeRepository.findProducersByUserId(user.getId());
     }
 
+    // 유저가 좋아요버튼을 누른 샵,레스토랑 목록을 반환합니다.
     public List<ShopEntity> getLikedShops(String username) {
         User user = findByUsername(username);
         if (user == null) {
@@ -203,7 +218,7 @@ public class UserService {
         return shoplikeRepository.findShopsByUserId(user.getId());
     }
     
- // 비밀번호 재설정 토큰 생성 및 저장
+    // 비밀번호 재설정 토큰 생성 및 저장합니다.
     public String createPasswordResetTokenForUser(User user) {
         // 보안에 강한 랜덤 토큰을 생성합니다.
         String token = UUID.randomUUID().toString();
@@ -215,7 +230,7 @@ public class UserService {
         return token;
     }
 
-    // 비밀번호 재설정 이메일 발송
+    // 비밀번호 재설정 이메일 발송합니다.
     public void sendPasswordResetEmail(User user, String token) throws MessagingException {
 
         // 현재 시간 설정

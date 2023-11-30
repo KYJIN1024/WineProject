@@ -44,11 +44,11 @@ public class JobBoardService {
 	        return jobBoardRepository.save(jobEntity);
 	    }
 	
-	 public Page<JobEntity> getAllJobBoards(Pageable pageable) {
+	public Page<JobEntity> getAllJobBoards(Pageable pageable) {
 	    return jobBoardRepository.findAll(pageable);
 	    }
 	 
-	 public String saveImage(MultipartFile file) throws IOException {
+	public String saveImage(MultipartFile file) throws IOException {
 	        String directoryPath = "D:\\uploaded_files";
 	        File dir = new File(directoryPath);
 
@@ -70,7 +70,7 @@ public class JobBoardService {
 	        return directoryPath + "\\" + savedFileName;
 	    } 
 	 
-	 public void updateJobBoard(Integer id, JobEntity updatedJob) {
+	public void updateJobBoard(Integer id, JobEntity updatedJob) {
 	        Optional<JobEntity> jobOpt = jobBoardRepository.findById(id);
 
 	        if (jobOpt.isPresent()) {
@@ -85,7 +85,7 @@ public class JobBoardService {
 	        }
 	    }
 	    
-	    public void deleteJobBoard(Integer id) {
+	public void deleteJobBoard(Integer id) {
 	    	jobBoardRepository.deleteById(id);
 	    }
 	

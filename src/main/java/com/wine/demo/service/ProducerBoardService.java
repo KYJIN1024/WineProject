@@ -22,29 +22,31 @@ import com.wine.demo.repository.UserRepository;
 @Service
 public class ProducerBoardService {
 
-	 @Autowired
-	    private ProducerBoardRepository producerBoardRepository;
+	@Autowired
+	private ProducerBoardRepository producerBoardRepository;
 
-	 @Autowired
-	    private ProducerLikeRepository producerLikeRepository;
+	@Autowired
+	private ProducerLikeRepository producerLikeRepository;
 	 
-	 @Autowired
-	    private UserRepository userRepository; 
+	@Autowired
+	private UserRepository userRepository; 
 	 
-
+	// 모든 게시물을 가져오는 메서드
     public List<ProducerEntity> getAllProducerBoards() {
         return producerBoardRepository.findAll();
     }
-
+    
+    // 특정 id의 게시물을 가져오는 메서드
     public Optional<ProducerEntity> getProducerBoardById(Integer id) {
         return producerBoardRepository.findById(id);
     }
-
+    
+    // 새로운 게시물을 저장하는 메서드
     public ProducerEntity saveProducerBoard(ProducerEntity producerEntity) {
         return producerBoardRepository.save(producerEntity);
     }
 
-
+    // 이미지 저장
     public String saveImage(MultipartFile file) throws IOException {
         String directoryPath = "D:\\uploaded_files";
         File dir = new File(directoryPath);
@@ -67,10 +69,12 @@ public class ProducerBoardService {
         return directoryPath + "\\" + savedFileName;
     }
     
+    // 사용자가 게시물에 좋아요를 눌렀는지 확인하는 메서드
     public boolean hasUserLiked(Integer userId, Integer producerId) {
         return producerLikeRepository.existsByUserIdAndProducer_Pdboardid(userId, producerId);
     }
-
+    
+    // 사용자가 게시물에 좋아요를 누르는 기능을 처리하는 메서드
     public void likeProducer(Integer userId, Integer producerId) {
         if (!hasUserLiked(userId, producerId)) {
             ProducerLike like = new ProducerLike();
@@ -87,17 +91,16 @@ public class ProducerBoardService {
             producerBoardRepository.save(producer);
         }
     }
-
+    
+    // 특정 생산자 게시물을 업데이트하는 메서드
     public void updateProducerBoard(Integer id, ProducerEntity updatedProducer) {
         Optional<ProducerEntity> producerOpt = producerBoardRepository.findById(id);
 
         if (producerOpt.isPresent()) {
             ProducerEntity existingProducer = producerOpt.get();
-            
-            // Update the fields that you want
             existingProducer.setPdboardtitle(updatedProducer.getPdboardtitle());
             existingProducer.setPdboardcontent(updatedProducer.getPdboardcontent());
-            // ... (you can continue updating other fields if needed)
+  
 
             producerBoardRepository.save(existingProducer);
         } else {
@@ -105,16 +108,14 @@ public class ProducerBoardService {
         }
     }
     
+    // 게시글 삭제
     public void deleteProducerBoard(Integer id) {
     	producerBoardRepository.deleteById(id);
     }
     
+    // 페이지 정보에 따라 게시물을 가져오는 메서드
     public Page<ProducerEntity> getAllProducerBoards(Pageable pageable) {
         return producerBoardRepository.findAll(pageable);
     }
-    
-    
-    
-    
     
 }

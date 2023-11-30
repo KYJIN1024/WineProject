@@ -10,10 +10,12 @@ public class EmailService {
 
     private JavaMailSender javaMailSender;
 
+    // JavaMailSender의 의존성 주입
     public EmailService(JavaMailSender javaMailSender) {
         this.javaMailSender = javaMailSender;
     }
 
+    // 이메일 메세지 메서드
     public void sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("kyjj1024@gmail.com");

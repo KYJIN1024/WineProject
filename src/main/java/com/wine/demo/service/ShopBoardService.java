@@ -102,9 +102,5 @@ public class ShopBoardService {
 	        }
 	    }
 
-	    
-	    
-	    
-	    
 	
 }

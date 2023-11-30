@@ -50,31 +50,31 @@ public class FreeBoardService {
         frbreBoardRepository.deleteById(id);
 	}
 	
-	// 댓글
+	// 댓글저장
 	 public CommentEntity saveComment(CommentEntity comment) {
 	        return commentRepository.save(comment);
 	    }
-
+	 	// 댓글 찾기
 	    public Optional<CommentEntity> findCommentById(Long id) {
 	        return commentRepository.findById(id);
 	    }
-
+	    // 댓글 업데이트
 	    public void updateComment(CommentEntity comment) {
 	        commentRepository.save(comment);
 	    }
-
+	    // 댓글 삭제
 	    public void deleteComment(Long id) {
 	        commentRepository.deleteById(id);
 	    }
-	    
+	    // 특정 게시글의 댓글 목록 가져오기
 	    public List<CommentEntity> getCommentsForFreeboard(Integer frboardid) {
 	        return commentRepository.findByFreeBoard_Frboardid(frboardid);
 	    }
-	    
+	    // 게시글의 댓글 수 가져오기
 	    public int getCommentCountForBoard(Integer frboardid) {
 	        return commentRepository.countByFreeBoard_Frboardid( frboardid);
 	    }
-	
+	    // 조회수가 높은 상위 5개 게시글 가져오기
 	    public List<FreeBoardEntity> getTopFreeBoardsByHits() {
 	        return frbreBoardRepository.findTop5ByOrderByFrboardhitsDesc();
 	    }
