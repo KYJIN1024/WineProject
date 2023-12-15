@@ -164,10 +164,18 @@
 **1.패키지구조**
    <details> 
       <summary>패키지 구조보기</summary>
+ 
+   ![project structure2](https://github.com/KYJIN1024/WineProject/assets/111983474/94ab966e-4f8f-4d7a-b443-3f6e1929434a)
 
-   ![project structure1](https://github.com/KYJIN1024/WineProject/assets/111983474/868ae86c-6425-4f05-8180-11d7236fd5c3)
-   </details>
    
+   </details>
+ 
+ **2.DB설계**
+     <details> 
+          <summary>ERD다이어그램</summary>
+
+   ![WineProject2](https://github.com/KYJIN1024/WineProject/assets/111983474/5835efb5-4e11-4b64-999a-fe6bc96cb52c)
+
 
 
 
