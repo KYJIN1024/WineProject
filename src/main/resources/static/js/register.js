@@ -12,14 +12,14 @@
 	                alert('인증번호가 이메일로 전송되었습니다. 이메일을 확인해주세요.');
 	            },
 	            error: function(error) {
-	                alert('Error sending verification code.');
+	                alert('인증번호 전송과정에 에러가 발생했습니다.');
 	            }
 	         });
 	    });
             
      $("#checkUsername").click(function(){
         var username = $("#username").val();
-        $.ajax({
+        $.ajax({ //서버에 비동기 요청
             url: '/checkUsername',
             type: 'POST',
             contentType: 'application/json', 
@@ -34,7 +34,7 @@
                 }
             },
             error: function(error) {
-                alert('Error checking username.');
+                alert('아이디 확인과정에 에러가 발생했습니다.');
             }
            
         });

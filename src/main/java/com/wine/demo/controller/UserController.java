@@ -61,26 +61,26 @@ public class UserController {
      // 로그인페이지
      @GetMapping("/login")
      public String showLoginPage(HttpServletRequest request, HttpSession session) {
-     	 String referrer = request.getHeader("Referer");
+     	 String referrer = request.getHeader("Referer"); // 이전에 방문한 페이지의 url을 가져옴
     	    if (referrer != null && !referrer.contains("/login")) {
-    	        session.setAttribute("prevPage", referrer);
-    	    }
+    	        session.setAttribute("prevPage", referrer); // 이전 페이지의 url을 세션에 저장
+    	    } 
     	    return "login/login";
     	}
 
      // 로그인 요청을 처리 
      @PostMapping("/login")
      public String loginUser(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
-         if (username == null || password == null) {
+         if (username == null || password == null) { 
              model.addAttribute("error", "사용자 이름 또는 비밀번호가 누락되었습니다.");
              return "login";
          }
 
          if (userService.loginUser(username, password)) {
-             session.setAttribute("username", username);
-             String prevPage = (String) session.getAttribute("prevPage");
-             session.removeAttribute("prevPage");
-             return "redirect:" + (prevPage != null ? prevPage : "/");
+             session.setAttribute("username", username); //로그인정보 세션에 저장
+             String prevPage = (String) session.getAttribute("prevPage"); // 이전에 방문한 페이지로 리다이렉트(session의 prevpage에서 이전페이지정보를 가져옴)
+             session.removeAttribute("prevPage"); //페이지url데이터 세션에서 삭제
+             return "redirect:" + (prevPage != null ? prevPage : "/"); // 이전 페이지가 null이 아니면 해당페이지로 null이면 홈페이지로 리다이렉트
          } else {
              model.addAttribute("error", "잘못된 사용자 이름 또는 비밀번호입니다.");
              return "login";
@@ -96,13 +96,13 @@ public class UserController {
     // id 중복확인
     @PostMapping("/checkUsername")
     @ResponseBody
-    public ResponseEntity<Boolean> checkUsername(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<Boolean> checkUsername(@RequestBody Map<String, String> payload) { //json형식
         String username = payload.get("username");
         boolean isAvailable = userService.checkUsernameAvailability(username);
         return new ResponseEntity<>(isAvailable, HttpStatus.OK);
     }
     
-    // 인증이메일 전송을 처리
+    // 인증이메일 전송처리
     @PostMapping("/sendVerificationEmail")
     @ResponseBody
     public ResponseEntity<String> sendVerificationEmail(@RequestBody Map<String, String> payload) {
@@ -114,12 +114,12 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity<>("서버 에러: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("이메일 전송 완료", HttpStatus.OK);
+        return new ResponseEntity<>("이메일 전송에 성공했습니다. 이메일을 확인해주세요!", HttpStatus.OK);
     }
     
     // 회원가입 요청을 처리
     @PostMapping("/register")
-    @ResponseBody
+    @ResponseBody   // HTTP 요청 본문의 내용을 자바 객체로 변환하여 매개변수에 바인딩. 이 경우에는 요청 본문은 Map<String, String> 형태로 변환
     public String processRegister(@RequestBody Map<String, String> payload) {
 
         String username = payload.get("username");
@@ -154,7 +154,7 @@ public class UserController {
         return "login/findIdPw";
     }
     
-    // 어이디 찾기를 처리하는 메서드
+    // 아이디/비밀번호 찾기를 처리하는 메서드
     @PostMapping("/findUsername")
     @ResponseBody
     public ResponseEntity<String> findUsername(@RequestParam Map<String, String> payload) {
@@ -184,7 +184,7 @@ public class UserController {
                 // 비밀번호 재설정 이메일 발송
                 userService.sendPasswordResetEmail(user, token);
                 // 비밀번호 재설정 요청이 성공적으로 처리되었다는 메시지 표시
-                model.addAttribute("message", "비밀번호 재설정 이메일이 발송되었습니다.");
+                model.addAttribute("message", "아이디찾기 및 비밀번호 재설정 이메일이 발송되었습니다.");
                 return "login/findIdPw"; // 비밀번호 재설정 이메일이 발송되었다는 메시지를 표시하는 뷰로 리다이렉트
             } catch (MessagingException e) {
                 // 이메일 발송 중 오류가 발생한 경우 에러 메시지 표시
@@ -233,7 +233,7 @@ public class UserController {
     //변경완료 메세지 페이지 출력
     @GetMapping("/message")
     public String showMessage(Model model) {
-        model.addAttribute("message", "비밀번호를 바꾸었습니다. 새로운 비밀번호로 로그인하세요.");
+        model.addAttribute("message", "비밀번호 변경이 완료되었습니다. 새로운 비밀번호로 로그인하세요.");
         model.addAttribute("redirect", "/");
         return "login/message"; 
     }
