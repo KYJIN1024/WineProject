@@ -3,7 +3,7 @@
 ![home-2](https://github.com/KYJIN1024/WineProject/assets/111983474/10279b2e-8396-4750-84ad-f2fa84655cd5)
 
 ## 목차
-- 들어가며
+- [들어가며](#들어가며)
   - 프로젝트 소개
   - 프로젝트 기능
   - 사용 기술
