@@ -25,20 +25,34 @@
 		      margin-bottom: 15px;
 		   }
 		   
-		   .action-buttons a {
-		      margin-right: 10px;
-		      padding: 5px 15px;
-		      border: 1px solid #007bff;
-		      color: #007bff;
-		      border-radius: 5px;
-		      transition: all 0.3s;
-		   }
-		   
-		   .action-buttons a:hover {
-		      background-color: #007bff;
-		      color: #fff;
-		      text-decoration: none;
-		   }
+		   .action-buttons {
+		        display: flex; /* 플렉스 박스로 설정 */
+		        flex-wrap: wrap; /* 내용이 넘칠 경우 다음 줄로 넘김 */
+		        gap: 10px; /* 버튼 사이의 간격 설정 */
+		        justify-content: flex-start; /* 왼쪽 정렬 */
+		        align-items: center; /* 수직 중앙 정렬 */
+		    }
+		
+		    .action-buttons a, .action-buttons button {
+		        padding: 5px 15px;
+		        border: 1px solid #007bff;
+		        color: #007bff;
+		        border-radius: 5px;
+		        transition: all 0.3s;
+		        text-decoration: none;
+		        background-color: transparent;
+		    }
+		
+		    .action-buttons a:hover, .action-buttons button:hover {
+		        background-color: #007bff;
+		        color: #fff;
+		    }
+		
+		    /* 삭제 버튼 전용 스타일 */
+		    .delete-post-btn {
+		        order: 3; /* '글 삭제' 버튼이 세 번째 순서로 나타나도록 설정 */
+		        flex-basis: 100%; /* '글 삭제' 버튼을 새로운 줄에서 시작하도록 설정 */
+		    }
 		   
 		   .col-lg-9 {
 			    width: 55%;  /* 원하는 너비 값으로 조절 */
@@ -92,6 +106,7 @@
 	     <!-- Template Stylesheet -->
 	    <link href="/css/style.css" rel="stylesheet">
 	    
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
     
@@ -187,9 +202,12 @@
 								   <h3 class="main-content" th:utext="${jobboard.jobboardcontent}" style="font-size: 16px;">내용</h3>
 								   
 								   <div class="action-buttons">
-								      <a th:href="@{/partners/job/delete(id=${jobboard.jobboardid})}">글 삭제</a>
-								      <a th:href="@{/partners/job/modify/{id}(id = ${jobboard.jobboardid})}">글 수정</a>
-								      <a th:href="@{/partners/job/list}">목록</a>
+								      <form id="delete-post-form" action="/partners/job/delete" method="post" class="inline-form">
+									    <input type="hidden" name="id" th:value="${jobboard.jobboardid}">
+									    <button type="submit" class="link-style delete-post-btn">글 삭제</button>
+								     </form>
+								      <a th:href="@{/partners/job/modify/{id}(id = ${jobboard.jobboardid})}" class="link-style">글 수정</a>
+								      <a th:href="@{/partners/job/list}" class="link-style">목록</a>
 								</div>
 							</div>
 						</div>
@@ -240,6 +258,7 @@
 	
 	    <!-- Template Javascript -->
 	    <script src="/js/main.js"></script>
+	    <script src="/js/job.js"></script>
 	    
 
 </body>

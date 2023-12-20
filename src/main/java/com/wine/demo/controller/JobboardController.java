@@ -120,7 +120,7 @@ public class JobboardController {
 	}
 	
 	// 게시글 삭제
-	@GetMapping("/delete")
+	@PostMapping("/delete")
 	public String deletejobboard(@RequestParam Integer id) {
 		jobBoardService.deleteJobBoard(id);
 	    return "redirect:/partners/job/list";

@@ -9,10 +9,10 @@ function isUserLoggedIn() {
 // 글작성 버튼 클릭 이벤트 핸들러
 function handleWriteButtonClick(event) {
 	
-	   	console.log("Write button clicked");
+	   	//console.log("Write button clicked");
         event.preventDefault();
 	
-    	console.log("Is user logged in?", isUserLoggedIn());
+    	//console.log("Is user logged in?", isUserLoggedIn());
     if (!isUserLoggedIn()) {
         alert('글 작성을 하려면 로그인해주세요.');
         window.location.href = '/login'; // 로그인 페이지로 리다이렉션
@@ -30,5 +30,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (writeButton) {
         writeButton.addEventListener('click', handleWriteButtonClick);
     }
+});
+
+$(document).ready(function() {
+    $('.delete-post-btn').on('click', function(event) {
+        var confirmed = confirm('정말로 이 글을 삭제하시겠습니까?');
+        if (!confirmed) {
+            event.preventDefault(); // 사용자가 취소를 선택하면 삭제 작업을 중단합니다.
+        }
+    });
 });
 
