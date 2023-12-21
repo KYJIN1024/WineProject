@@ -49,8 +49,9 @@ public class SearchController {
 
 	    // 원료별 검색
 	    if (!ingredient.isEmpty() && !"기타".equals(ingredient)) {
+	    	List<String> ingredientList = Arrays.asList(ingredient.split(","));
 	        results = results.stream()
-	                .filter(search -> search.getMainIngredient().contains(ingredient))
+	        		.filter(search -> ingredientList.stream().anyMatch(ing -> search.getMainIngredient().contains(ing)))
 	                .collect(Collectors.toList());
 	    } else if ("기타".equals(ingredient)) {
 	        results = results.stream()
@@ -60,8 +61,9 @@ public class SearchController {
 
 	    // 지역별 검색
 	    if (!region.isEmpty() && !"기타".equals(region)) {
+	    	List<String> regionList = Arrays.asList(region.split(","));
 	        results = results.stream()
-	                .filter(search -> region.equals(search.getRegion()))
+	        		.filter(search -> regionList.stream().anyMatch(reg -> reg.equals(search.getRegion())))
 	                .collect(Collectors.toList());
 	    } else if ("기타".equals(region)) {
 	        results = results.stream()
@@ -71,41 +73,37 @@ public class SearchController {
 
 	    // 용량별 검색
 	    if (!volume.isEmpty()) {
+	    	List<String> volumeList = Arrays.asList(volume.split(","));
 	        results = results.stream()
-	                .filter(search -> search.getSpecification().contains(volume))
+	        		.filter(search -> volumeList.stream().anyMatch(vol -> search.getSpecification().contains(vol)))
 	                .collect(Collectors.toList());
 	    }
 
 	    // 도수별 검색
 	    if (!degree.isEmpty()) {
-	        switch(degree) {
-	            case "10이하":
-	                results = results.stream()
-	                        .filter(search -> search.getAlcoholDegree() <= 10)
-	                        .collect(Collectors.toList());
-	                break;
-	            case "10-11도":
-	                results = results.stream()
-	                        .filter(search -> search.getAlcoholDegree() > 10 && search.getAlcoholDegree() <= 11)
-	                        .collect(Collectors.toList());
-	                break;
-	            case "11-12도":
-	                results = results.stream()
-	                        .filter(search -> search.getAlcoholDegree() > 11 && search.getAlcoholDegree() <= 12)
-	                        .collect(Collectors.toList());
-	                break;
-	            case "12-13도":
-	                results = results.stream()
-	                        .filter(search -> search.getAlcoholDegree() > 12 && search.getAlcoholDegree() <= 13)
-	                        .collect(Collectors.toList());
-	                break;
-	            case "14이상":
-	                results = results.stream()
-	                        .filter(search -> search.getAlcoholDegree() >= 14)
-	                        .collect(Collectors.toList());
-	                break;
-	        }
-	    }
+	    	 List<String> degreeList = Arrays.asList(degree.split(","));
+	    	 results = results.stream()
+	                 .filter(search -> {
+	                     double alcohol = search.getAlcoholDegree();
+	                     return degreeList.stream().anyMatch(deg -> {
+	                         switch(deg) {
+	                             case "10이하":
+	                                 return alcohol <= 10;
+	                             case "10-11도":
+	                                 return alcohol > 10 && alcohol <= 11;
+	                             case "11-12도":
+	                                 return alcohol > 11 && alcohol <= 12;
+	                             case "12-13도":
+	                                 return alcohol > 12 && alcohol <= 13;
+	                             case "14이상":
+	                                 return alcohol >= 14;
+	                             default:
+	                                 return false;
+	                         }
+	                     });
+	                 })
+	                 .collect(Collectors.toList());
+	     }
 
 	    return results;
 	}
