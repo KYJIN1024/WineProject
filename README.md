@@ -1,4 +1,4 @@
-# KOWASA.NET  코와사넷
+# KOWASA.NET  [코와사넷](https://www.kowasa.net)
  > 국산와인을 주제로 정보제공 정보교류를 목적으로 하는 웹프로젝트입니다.
 ![home-2](https://github.com/KYJIN1024/WineProject/assets/111983474/10279b2e-8396-4750-84ad-f2fa84655cd5)
 
