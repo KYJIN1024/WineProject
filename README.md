@@ -1,4 +1,4 @@
-# KOWASA.NET  코와사넷
+# KOWASA.NET  [코와사넷](https://www.kowasa.net)
  > 국산와인을 주제로 정보제공 정보교류를 목적으로 하는 웹프로젝트입니다.
 ![home-2](https://github.com/KYJIN1024/WineProject/assets/111983474/10279b2e-8396-4750-84ad-f2fa84655cd5)
 
@@ -115,8 +115,12 @@
         ![list2](https://github.com/KYJIN1024/WineProject/assets/111983474/564f43c3-3b1f-4725-b953-488a9a83fceb)
 
         생산자게시판- 와인생산자(와이너리)에 관한 정보를 조회할수 있습니다.
+        
         와인샵&레스토랑게시판- 와인샵및 와인레스토랑에 대해 검색할수 있습니다.
+        
         와인구인게시판- 와인과 관련된 구인정보를 조회할수 있습니다.
+        
+        
         목록을 pageing하고 로그인한 상태에서 게시글에 좋아요 버튼을 누를수 있습니다. 게시글 및 인기게시글을 조회할수 있습니다.
 
       - 게시글 등록
@@ -223,6 +227,9 @@
 </details>
 
 ## 개발내용
+[JAVA Spring Boot 프로젝트- 1. 스프링 시큐리티를 이용한 회원가입 및 로그인 구현하기(1)](https://every-coding.tistory.com/16)
+[JAVA Spring Boot 프로젝트- 1. 스프링 시큐리티를 이용한 회원가입 및 로그인 구현하기(2)](https://every-coding.tistory.com/17)
+
 
 
 # 마치며
