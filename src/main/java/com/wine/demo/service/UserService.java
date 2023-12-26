@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,13 +105,19 @@ public class UserService {
     }
 
     // 새로운 사용자를 저장하거나 기존 사용자 정보를 업데이트합니다.
+    @Transactional
     public void save(User user, boolean encodePassword) {
+    try {
         if (encodePassword) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         userRepository.save(user);
+    } catch (Exception e) {
+        // 로그와 함께 예외를 기록합니다.
+        logger.error("Error saving user: {}", user, e);
+        throw e; // 필요한 경우 예외를 다시 던질 수 있습니다.
     }
-    
+   } 
     // 사용자의 현재 비밀번호가 맞는지 확인합니다.
     public boolean checkCurrentPassword(String currentPassword) {
         User user = getAuthenticatedUser();
@@ -142,7 +149,7 @@ public class UserService {
             String verificationCode = generateVerificationCode();
             String message = "인증 코드: " + verificationCode;
 
-            // Save the generated verification code to the database
+           
             VerificationCode code = new VerificationCode(email, verificationCode);
             verificationCodeRepository.save(code);
 
@@ -150,10 +157,10 @@ public class UserService {
 
            // logger.info("Sent verification email to {}", email);
         } catch (MailException e) {
-           // logger.error("Failed to send verification email to {}", email, e);
+           // logger.error("{}애 이메일인증전송을 실패했습니다.", email, e);
             throw e;
         } catch (Exception e) {
-            //logger.error("An unexpected error occurred when trying to send verification email to {}", email, e);
+            //logger.error("알수없는 에러가 발생했습니다.", email, e);
             throw e;
         }
     }
@@ -274,6 +281,13 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }
+    
+    public User saveOrUpdateUser(User user) {
+        // 사용자 정보 저장 또는 업데이트
+        return userRepository.save(user);
+    }
+
+    
     
     
 }

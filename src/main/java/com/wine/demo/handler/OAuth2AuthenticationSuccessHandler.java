@@ -23,10 +23,10 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
-        String username = token.getPrincipal().getAttribute("name");
-        request.getSession().setAttribute("username", username);
-        //logger.info("Username set in session: {}", username);
-        response.sendRedirect("/");
+        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication; //oauth2토큰으로 객체르르 캐스팅
+        String username = token.getPrincipal().getAttribute("name");  // 토큰에서 id추출
+        request.getSession().setAttribute("username", username); // 세션에 사용자 이름 저장
+        logger.info("Username set in session: {}", username);
+        response.sendRedirect("/");  // 홈페이지로 rediret
     }
 }

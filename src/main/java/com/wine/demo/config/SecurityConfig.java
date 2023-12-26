@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -28,6 +29,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.wine.demo.handler.CustomLogoutSuccessHandler;
 import com.wine.demo.handler.OAuth2AuthenticationSuccessHandler;
+import com.wine.demo.handler.UserLoginFailHandler;
+import com.wine.demo.service.PrincipalOauth2UserService;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import com.wine.demo.config.SecurityConstants;
@@ -42,10 +46,6 @@ import com.wine.demo.handler.CustomAuthenticationSuccessHandler;
 	 @Autowired
 	 private UserDetailsService userDetailsService;
 	 
-	 @Autowired
-	 private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
-	
-	 // 성공 핸들러를 별도의 클래스로 분리
 	 @Bean
 	 public AuthenticationSuccessHandler successHandler() {
 	     return new CustomAuthenticationSuccessHandler(
@@ -81,6 +81,13 @@ import com.wine.demo.handler.CustomAuthenticationSuccessHandler;
 	 protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 	     auth.authenticationProvider(authenticationProvider());
 	 }
+	 
+	 @Autowired
+	 @Lazy
+	 private UserLoginFailHandler userLoginFailHandler;
+	 
+	 @Autowired
+	 private PrincipalOauth2UserService principalOauth2UserService;
 	
 	 @Override
 	 protected void configure(HttpSecurity http) throws Exception {
@@ -96,14 +103,7 @@ import com.wine.demo.handler.CustomAuthenticationSuccessHandler;
 	         .formLogin()
 	             .loginPage("/login")
 	             .successHandler(customAuthenticationSuccessHandler())
-	         .and()
-	         .oauth2Login()
-	             .loginPage("/login")
-	             .successHandler(oAuth2AuthenticationSuccessHandler())
-	             .userInfoEndpoint()
-	             .oidcUserService(oidcUserService)
-	             .and()
-	             .failureUrl(SecurityConstants.LOGIN_ERROR_URL)
+	             .failureHandler(userLoginFailHandler)
 	         .and()
 	         .logout()
 	             .logoutUrl("/logout")
@@ -112,7 +112,12 @@ import com.wine.demo.handler.CustomAuthenticationSuccessHandler;
 	             .invalidateHttpSession(true)
 	             .deleteCookies("JSESSIONID")
 	             .clearAuthentication(true)
-	             .permitAll();
+	             .permitAll()
+	         .and()
+	         .oauth2Login()
+             .loginPage("/login")
+             .userInfoEndpoint()
+             .userService(principalOauth2UserService);
 	 }
 	
 	 @Override
@@ -120,7 +125,7 @@ import com.wine.demo.handler.CustomAuthenticationSuccessHandler;
 	     web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**","/scss/**","/vendor/**","/fonts/**");
 	 }
 	 
-	 // 커스텀 로그아웃 핸들러를 빈으로 등록
+
 	 @Bean
 	 public CustomLogoutSuccessHandler customLogoutSuccessHandler() {
 	     return new CustomLogoutSuccessHandler();
@@ -130,7 +135,15 @@ import com.wine.demo.handler.CustomAuthenticationSuccessHandler;
 	    public OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
 	        return new OAuth2AuthenticationSuccessHandler();
 	    }
+	 
+	 @Bean
+	 public UserLoginFailHandler userLoginFailHandler() {
+	     return new UserLoginFailHandler();
+	 }
+	 
+	 
 	}
     
+	
     
    

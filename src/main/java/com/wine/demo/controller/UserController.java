@@ -55,7 +55,7 @@ public class UserController {
      @PostMapping("/login")
      public String loginUser(@RequestParam String username, @RequestParam String password, HttpSession session, Model model) {
          if (username == null || password == null) { 
-             model.addAttribute("error", "사용자 이름 또는 비밀번호가 누락되었습니다.");
+             model.addAttribute("error", "사용자 이름 또는 비밀번호가 누락되었습니다."); //입력누락에 대한 간단한 검증만 수행하고 로그인시도및 실패처리는 handler가 담당
              return "login";
          }
 
@@ -221,5 +221,8 @@ public class UserController {
         return "login/message"; 
     }
 
+    
+    
+    
 }
     
