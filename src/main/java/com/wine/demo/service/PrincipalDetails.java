@@ -43,6 +43,12 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         });
         return collect;
     }
+    
+    // 소셜 로그인 여부를 확인하는 메소드
+    public boolean isSocial() {
+        return attributes != null && !attributes.isEmpty();
+    }
+    
 
 
     // User 의 password 리턴

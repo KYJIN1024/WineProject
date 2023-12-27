@@ -26,6 +26,32 @@
 		<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 		
 		<link href="/css/style.css" rel="stylesheet">
+		
+		<script>
+			function deleteAccount() {
+			    if (confirm("정말로 계정을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+			        fetch('/delete-account', {
+			            method: 'POST',
+			            headers: {
+			                'Content-Type': 'application/json',
+			                // CSRF 토큰을 추가하는 것을 고려하세요
+			            }
+			        })
+			        .then(response => {
+			            if (response.ok) {
+			                alert('계정이 성공적으로 삭제되었습니다.');
+			                window.location.href = '/'; // 사용자를 홈페이지로 리디렉션
+			            } else {
+			                alert('오류가 발생했습니다. 다시 시도해주세요.');
+			            }
+			        })
+			        .catch(error => {
+			            console.error('Error:', error);
+			            alert('오류가 발생했습니다. 다시 시도해주세요.');
+			        });
+			    }
+			}
+		</script>
 
 </head>
 
@@ -68,7 +94,7 @@
 					    Login<i class="fa fa-arrow-right ms-3"></i>
 					</a>
 					<div class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" th:if="${#authorization.expression('isAuthenticated()')}">
-					    <p style="margin-top: 10px;"><span th:text="${#session.getAttribute('username')}"></span>님, 환영합니다.</p>
+					    <p style="margin-top: 10px;"><span th:text="${#authentication.name}"></span>님, 환영합니다.</p>
 					    <button style="padding: 2px 5px;" onclick="location.href='/logout'">로그아웃</button>
 					    <button style="padding: 2px 5px;" onclick="location.href='/mypage'">마이페이지</button>
 					</div>
@@ -81,14 +107,16 @@
 		
 			 <section id="my-info">
 				    	<h2>마이페이지</h2> 
-				        <h4 id="username" th:text="${username}+'님 안녕하세요?'"></h4>
+				        <h4 id="username" th:text="${#authentication.name}+'님 안녕하세요?'"></h4>
 		  	</section>
 		  	
 		  	<section id="my-info">
 		  			   <img src="img/locker.png"  width="100" height="100" style="float: left; margin-right: 20px;">
 				       <h2>비밀번호변경</h2> 
 				        <p>주기적으로 비밀번호를 변경하여 계정을 보호하세요.</p>	
-					   <a href="#" id="editButton" class="btn btn-primary" data-toggle="modal" data-target="#editModal">비밀번호변경</a>
+					   <a href="#" id="editButton" class="btn btn-primary" data-toggle="modal" data-target="#editModal" th:if="${!isSocial}" >비밀번호변경</a>
+					   <!-- 소셜 로그인 사용자의 경우 경고 창 표시 버튼 -->
+					   <button id="socialEditButton" class="btn btn-primary" th:if="${isSocial}" onclick="alert('소셜 로그인 사용자는 비밀번호를 변경할 수 없습니다.'); return false;">비밀번호 변경</button>
 					   <div style="clear: both;"></div>
 		  	</section>
 		  	
@@ -123,12 +151,12 @@
 		    </section>
 		    
 		    <section id="delete-account">
-		    	<img src="img/exclamation-mark.png"  width="100" height="100" style="float: left; margin-right: 20px;">
-		        <h2>정말 탈퇴하시겠습니까?</h2>
-		        <p>탈퇴시 기존 개인정보는 절대 복구 되지않습니다.</p>
-		        <button id="delete-button">탈퇴하기</button>
-		        <div style="clear: both;"></div>
-		    </section>
+			    <img src="img/exclamation-mark.png"  width="100" height="100" style="float: left; margin-right: 20px;">
+			    <h2>정말 탈퇴하시겠습니까?</h2>
+			    <p>탈퇴시 기존 개인정보는 절대 복구 되지않습니다.</p>
+			    <button id="delete-button" onclick="deleteAccount()">탈퇴하기</button>
+			    <div style="clear: both;"></div>
+			</section>
 		</div>
 		
 		<!-- Modal -->

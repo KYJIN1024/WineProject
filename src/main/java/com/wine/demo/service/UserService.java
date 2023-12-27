@@ -287,7 +287,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    
+    public void deleteUserByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            userRepository.delete(user);
+        } else {
+            throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다: " + username);
+        }
+    }
     
     
 }

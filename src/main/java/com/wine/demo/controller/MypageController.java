@@ -3,9 +3,11 @@ package com.wine.demo.controller;
 import org.hibernate.engine.jdbc.StreamUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -44,13 +46,20 @@ public class MypageController {
     @GetMapping("/mypage")
     public String showLoginsuccessPage(HttpSession session, Model model) {
     	
-    	 String username = (String) session.getAttribute("username");
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        
+        boolean isSocial = authentication.getPrincipal() instanceof OAuth2User; // 소셜 로그인 여부 확인
+
+    	 
     	 int postCount = userInfoService.getUserPostCount(username);
     	 int commentCount = userInfoService.getUserCommentCount(username);
     	    
     	 model.addAttribute("username", username);
     	 model.addAttribute("postCount", postCount);
     	 model.addAttribute("commentCount", commentCount);
+    	 model.addAttribute("isSocial", isSocial); 
+    	 
         return "login/mypage";
     }
     
@@ -126,6 +135,21 @@ public class MypageController {
     	    List<CommentEntity> userComments = userInfoService.getUserComments(username);
 
     	    return userComments;
+    }
+    
+    @PostMapping("/delete-account")
+    @ResponseBody
+    public ResponseEntity<?> deleteAccount() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        try {
+            userService.deleteUserByUsername(username);
+            SecurityContextHolder.clearContext(); // 현재 사용자의 세션을 종료합니다.
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("계정 삭제 중 오류 발생: " + e.getMessage());
+        }
     }
     
 

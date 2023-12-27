@@ -80,7 +80,7 @@
 					    Login<i class="fa fa-arrow-right ms-3"></i>
 					</a>
 					<div class="btn btn-primary py-4 px-lg-5 d-none d-lg-block" th:if="${#authorization.expression('isAuthenticated()')}">
-					    <p style="margin-top: 10px;"><span th:text="${#session.getAttribute('username')}"></span>님, 환영합니다.</p>
+				  		<p style="margin-top: 10px;"><span th:text="${#authentication.name}"></span>님, 환영합니다.</p>
 					    <button style="padding: 2px 5px;" onclick="location.href='/logout'">로그아웃</button>
 					    <button style="padding: 2px 5px;" onclick="location.href='/mypage'">마이페이지</button>
 					</div>

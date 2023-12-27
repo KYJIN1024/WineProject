@@ -23,7 +23,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         String provider = userRequest.getClientRegistration().getRegistrationId(); // Google
         String providerId = oauth2User.getAttribute("sub"); // Google ProviderId Sub
-        String username = provider+"_"+providerId; // google_1231241512831
+        String shortenedProviderId = providerId.length() > 5 ? providerId.substring(0, 5) : providerId; // providerId에서 길이 5만큼의 문자열을 추출
+        String username = provider+"_"+shortenedProviderId; // google_123124
         String password = "1234"; // 크게 의미 없음.
         String email = oauth2User.getAttribute("email");
         String role = "ROLE_USER";
