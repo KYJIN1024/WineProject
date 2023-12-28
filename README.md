@@ -228,7 +228,12 @@
 
 ## 개발내용
 [JAVA Spring Boot 프로젝트- 1. 스프링 시큐리티를 이용한 회원가입 및 로그인 구현하기(1)](https://every-coding.tistory.com/16)
+
 [JAVA Spring Boot 프로젝트- 1. 스프링 시큐리티를 이용한 회원가입 및 로그인 구현하기(2)](https://every-coding.tistory.com/17)
+
+[JAVA Spring Boot 프로젝트-2. Oauth 2.0 구글로그인 구현하기](https://every-coding.tistory.com/18)
+
+개발내용은 현재 [블로그](https://every-coding.tistory.com/) 에 작성중입니다.
 
 
 
