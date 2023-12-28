@@ -129,32 +129,13 @@ public class UserController {
         }
     }
     
-    // 아이디/비밀번호 찾기 페이지 
+    // 아이디확인 및 비밀번호 찾기 페이지 
     @GetMapping("/findIdPw")
     public String showFindIdPwPage() {
         return "login/findIdPw";
     }
     
-    // 아이디/비밀번호 찾기를 처리하는 메서드
-    @PostMapping("/findUsername")
-    @ResponseBody
-    public ResponseEntity<String> findUsername(@RequestParam Map<String, String> payload) {
-        String email = payload.get("email");
-        User user = userService.findByEmail(email);
-        if(user != null) {
-            return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("해당아이디의 이메일주소를 찾을수 없습니다.", HttpStatus.NOT_FOUND);
-        }
-    }
-
-    
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
-    
-    // 비밀번호 재설정 요청을 처리하는 메서드
+    // 아이디확인 및 비밀번호 재설정 요청을 처리하는 메서드
     @PostMapping("/resetPassword")
     public String handleResetPasswordRequest(@RequestParam String email, Model model) {
         User user = userService.findByEmail(email);

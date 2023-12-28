@@ -1159,4 +1159,34 @@ legend {
 }
 
 
+/* 모바일 화면에 대한 미디어 쿼리 */
+@media (max-width: 768px) {
+  #searchResults.inner-form {
+    padding: 0 15px; /* Add some padding on the sides for small screens */
+  }
+
+  /* Ensure text wraps correctly */
+  #searchResults .container .row .col-md-6 {
+    word-wrap: break-word; /* Allows long words to be able to break and wrap onto the next line */
+  }
+
+  /* Flexbox layout for search result items */
+  #searchResults .container .row {
+    display: flex;
+    flex-direction: column; /* Stack children vertically on small screens */
+  }
+
+  /* Adjustments for images */
+  #searchResults .container .row .col-md-3 {
+    order: -1; /* Make sure images appear above the text on small screens */
+  }
+
+  /* Responsive adjustments for text details */
+  #searchResults .container .row .col-md-6,
+  #searchResults .container .row .col-md-3 {
+    display: block; /* Override any flex settings that might be causing issues */
+    width: 100%; /* Full width for all elements within a result item */
+    margin-bottom: 10px; /* Add some space between elements */
+  }
+}
 /*# sourceMappingURL=Searchs_008.css.map */

@@ -12,7 +12,7 @@ import com.wine.demo.model.User;
 
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
-    private User user; // 컴포지션
+    private User user; 
     private Map<String,Object> attributes;
 
     // 일반 로그인 생성자
