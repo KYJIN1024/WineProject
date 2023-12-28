@@ -1,4 +1,4 @@
-# KOWASA.NET  [코와사넷](https://www.kowasa.net)
+# KOWASA.NET   [코와사넷](https://www.kowasa.net)  v1.0
  > 국산와인을 주제로 정보제공 정보교류를 목적으로 하는 웹프로젝트입니다.
 ![home-2](https://github.com/KYJIN1024/WineProject/assets/111983474/10279b2e-8396-4750-84ad-f2fa84655cd5)
 
@@ -233,6 +233,8 @@
 
 [JAVA Spring Boot 프로젝트-2. Oauth 2.0 구글로그인 구현하기](https://every-coding.tistory.com/18)
 
+[JAVA Spring Boot 프로젝트-3. 아이디/비밀번호 찾기 기능 구현하기](https://every-coding.tistory.com/19)
+
 개발내용은 현재 [블로그](https://every-coding.tistory.com/) 에 작성중입니다.
 
 
@@ -241,10 +243,14 @@
 
 ## 1. 향후 보완해야할 사항
 
-마이페이지 - SNS 로그인연동 기능추가 / 회원탈퇴 기능추가
+마이페이지 - SNS 로그인연동 기능추가
+
 회원가입 - 유효성검사 추가, 네이버 소셜로그인 추가
+
 검색 - DB데이터추가
+
 게시판 - 파일업로드 기능 추가
+
 메인페이지 - AI CHATING기능
 
 ## 2. 후기
