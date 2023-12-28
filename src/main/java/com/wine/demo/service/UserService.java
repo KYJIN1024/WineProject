@@ -248,7 +248,7 @@ public class UserService {
         String formattedNow = now.format(formatter);
 
         // 비밀번호 변경 링크
-        String resetLink = "http://localhost:8080/changePw?token=" + token;
+        String resetLink = "https://kowasa.net/changePw?token=" + token;
 
         // 이메일 메시지 구성
         MimeMessage message = mailSender.createMimeMessage();

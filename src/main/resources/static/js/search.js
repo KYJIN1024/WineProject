@@ -1,6 +1,6 @@
 function displayResults(data) {
     let resultsDiv = document.getElementById('searchResults');
-    resultsDiv.innerHTML = ''; // Clear previous results
+    resultsDiv.innerHTML = ''; 
     
     // Check if there are no results
     if (data.length === 0) {

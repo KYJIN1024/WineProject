@@ -34,10 +34,18 @@
     <script type="text/javascript">
     
 		    function uncheckAll() {
-		    document.querySeSlectorAll('input[type="checkbox"]').forEach(checkbox => {
+		    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
 		        checkbox.checked = false;
 		    });
-		}
+			}
+		    
+		    document.addEventListener('DOMContentLoaded', (event) => {
+		        document.querySelectorAll('.nav-link').forEach(button => {
+		            button.addEventListener('click', uncheckAll);
+		        });
+		    });
+		    
+		 
     </script>
     
 </head>
@@ -297,19 +305,19 @@
             <div class="row g-4 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="col-lg-4">
                     <div class="nav w-100 nav-pills me-4">
-                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4 active" data-bs-toggle="pill" data-bs-target="#tab-pane-1" type="button" onclick="uncheckAll()">
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4 active" data-bs-toggle="pill" data-bs-target="#tab-pane-1" type="button" >
                              <i class="fas fa-wine-bottle fa-2x me-3"></i>
                             <h4 class="m-0">원료별로 검색하기</h4>
                         </button>
-                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-2" type="button" onclick="uncheckAll()">
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-2" type="button">
                             <i class="fas fa-map-marker-alt fa-2x me-3"></i>
                             <h4 class="m-0">지역별로 검색하기</h4>
                         </button>
-                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-3" type="button" onclick="uncheckAll()">
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-3" type="button" >
                              <i class="fas fa-tag fa-2x me-3"></i>
                             <h4 class="m-0">용량별로 검색하기</h4>
                         </button>
-                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-0" data-bs-toggle="pill" data-bs-target="#tab-pane-4" type="button" onclick="uncheckAll()">
+                        <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-0" data-bs-toggle="pill" data-bs-target="#tab-pane-4" type="button" >
                              <i class="fas fa-wine-glass-alt fa-2x me-3"></i>
                             <h4 class="m-0">도수별로 검색하기</h4>
                         </button>
