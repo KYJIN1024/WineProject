@@ -73,7 +73,7 @@
     
    2. 와인검색페이지
    ![search](https://github.com/KYJIN1024/WineProject/assets/111983474/10e46d0f-270a-4218-8918-2ec87c0ad76c)
-   통합검색 및 상세검색(원료별, 지역별, 용량별, 도수별)로 와인을 검색할수 있습니다. 
+   와인명으로 검색 및 조건별 검색(원료별, 지역별, 용량별, 도수별)으로 와인을 검색할수 있습니다. 
 
    3. 커뮤니티
        <details> 
@@ -234,6 +234,10 @@
 [JAVA Spring Boot 프로젝트-2. Oauth 2.0 구글로그인 구현하기](https://every-coding.tistory.com/18)
 
 [JAVA Spring Boot 프로젝트-3. 아이디/비밀번호 찾기 기능 구현하기](https://every-coding.tistory.com/19)
+
+[JAVA Spring Boot 프로젝트- 4. 와인 검색 페이지 구현](https://every-coding.tistory.com/20)
+
+[JAVA Spring Boot 프로젝트- 5. 자유게시판 구현(페이징, 조회수)](https://every-coding.tistory.com/21)
 
 개발내용은 현재 [블로그](https://every-coding.tistory.com/) 에 작성중입니다.
 
