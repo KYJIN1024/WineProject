@@ -239,6 +239,8 @@
 
 [JAVA Spring Boot 프로젝트- 5. 자유게시판 구현(페이징, 조회수)](https://every-coding.tistory.com/21)
 
+[JAVA Spring Boot 프로젝트- 6.댓글 CRUD 구현](https://every-coding.tistory.com/21)
+
 개발내용은 현재 [블로그](https://every-coding.tistory.com/) 에 작성중입니다.
 
 
