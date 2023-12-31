@@ -37,7 +37,7 @@ public class FreeBoardService {
 	}
 	
 
-	// 글 불러오기
+	// 글 상세보기 불러오기
 	public FreeBoardEntity freeBoardView( Integer id ) {
 		return frbreBoardRepository.findById( id ).get() ;
 	}
@@ -50,10 +50,10 @@ public class FreeBoardService {
         frbreBoardRepository.deleteById(id);
 	}
 	
-	// 댓글저장
-	 public CommentEntity saveComment(CommentEntity comment) {
-	        return commentRepository.save(comment);
-	    }
+		// 댓글저장
+		 public CommentEntity saveComment(CommentEntity comment) {
+		        return commentRepository.save(comment);
+		    }
 	 	// 댓글 찾기
 	    public Optional<CommentEntity> findCommentById(Long id) {
 	        return commentRepository.findById(id);

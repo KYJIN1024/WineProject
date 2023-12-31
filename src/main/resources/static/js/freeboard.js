@@ -41,8 +41,7 @@ function updateComment(commentId) {
 			            editForm.addClass('d-none');
 			        });
 			    }
-			
-			    // AJAX를 사용하여 댓글 삭제 처리
+// AJAX를 사용하여 댓글 삭제 처리
  function deleteComment(commentId) {
 	  if (confirm('댓글을 삭제하시겠습니까?')) {
 			  $.ajax({
