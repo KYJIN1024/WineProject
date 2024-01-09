@@ -4,10 +4,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.wine.demo.model.User;
 
 import lombok.Data;
 
@@ -26,7 +31,12 @@ public class ShopEntity {
     private String shopboardwriter;
     private String shopboardregister;
     private String shopboardphone;
-   
+    
+    // User 엔티티와의 연결을 나타내는 필드와 어노테이션
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
+    
     
     public String getFirstImageUrl() {
     	if (this.shopboardcontent == null || this.shopboardcontent.trim().isEmpty()) 

@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.wine.demo.model.User;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,4 +34,11 @@ public class CommentEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "frboardid")
     private FreeBoardEntity freeBoard;
+    
+    // User 엔티티와의 연결을 나타내는 필드와 어노테이션
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
+
+    
 }

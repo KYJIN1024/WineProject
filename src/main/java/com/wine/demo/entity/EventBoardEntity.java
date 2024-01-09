@@ -9,12 +9,17 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.wine.demo.model.User;
 
 import lombok.Data;
 
@@ -47,6 +52,12 @@ public class EventBoardEntity {
     
     @Column(name = "file_path")
     private String filePath; 
+    
+ // User 엔티티와의 연결을 나타내는 필드와 어노테이션
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
+    
     
     // 게시글의 첫 번째 이미지 URL을 추출
     public String getFirstImageUrl() {

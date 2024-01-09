@@ -8,7 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.wine.demo.model.User;
 
 import lombok.Data;
 
@@ -36,5 +40,9 @@ public class FreeBoardEntity
 	private LocalDateTime frboardupdatetime;
 	
 	private String tags;
+	
+	@ManyToOne
+	@JoinColumn(name = "userId", referencedColumnName = "id")
+	private User user;
 	
 }

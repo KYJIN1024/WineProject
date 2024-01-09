@@ -58,6 +58,15 @@ public class FreeboardController {
 			//게시글 목록 (list): 현재 페이지에 표시될 게시글 목록입니다. 
 			//freeBoardList(pageable) 메서드는 Pageable 객체에 따라 필요한 페이지의 게시글 목록을 반환합니다.
 			
+			 Map<Integer, Integer> commentCounts = new HashMap<>();
+             for (FreeBoardEntity board : list) {
+                 commentCounts.put(board.getFrboardid(), frbService.getCommentCountForBoard(board.getFrboardid()));
+             }
+             model.addAttribute("commentCounts", commentCounts);
+
+             List<FreeBoardEntity> topBoards = frbService.getTopFreeBoardsByHits();
+             model.addAttribute("topBoards", topBoards);
+
 			return "community/commfreeboardlist";
 	    }
 		

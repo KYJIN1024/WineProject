@@ -72,7 +72,7 @@ public class FreeBoardService {
 	    }
 	    // 게시글의 댓글 수 가져오기
 	    public int getCommentCountForBoard(Integer frboardid) {
-	        return commentRepository.countByFreeBoard_Frboardid( frboardid);
+	        return commentRepository.countByFreeBoard_Frboardid(frboardid);
 	    }
 	    // 조회수가 높은 상위 5개 게시글 가져오기
 	    public List<FreeBoardEntity> getTopFreeBoardsByHits() {

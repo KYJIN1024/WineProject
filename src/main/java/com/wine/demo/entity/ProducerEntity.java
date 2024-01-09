@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 
 import javax.persistence.*;
 
+import com.wine.demo.model.User;
+
 import lombok.Data;
 
 @Entity
@@ -22,6 +24,12 @@ public class ProducerEntity {
     private String pdboardwriter;
     private String pdboardregion;
     
+    // User 엔티티와의 연결을 나타내는 필드와 어노테이션
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
+    
+
     public String getFirstImageUrl() {
     	if (this.pdboardcontent == null || this.pdboardcontent.trim().isEmpty()) 
             return null;

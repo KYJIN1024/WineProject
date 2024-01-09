@@ -1,9 +1,12 @@
 package com.wine.demo.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import java.io.Serializable;
@@ -27,6 +30,12 @@ public class VerificationCode implements Serializable {
         this.email = email;
         this.code = code;
     }
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private User user;
+    
+    
 
     public Long getId() {
         return id;
