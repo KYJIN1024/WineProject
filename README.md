@@ -199,7 +199,9 @@
 ## 1. 패키지 구조
    <details> 
       <summary>패키지 구조보기</summary>
- 
+
+
+   
   ![2023-12-18 11 52 04](https://github.com/KYJIN1024/WineProject/assets/111983474/c231f796-53a6-4f0f-8030-c6930357270c)
 
 
@@ -210,8 +212,11 @@
    <details> 
         <summary>ERD다이어그램</summary>
 
-   ![WineProject2](https://github.com/KYJIN1024/WineProject/assets/111983474/5835efb5-4e11-4b64-999a-fe6bc96cb52c)
-     </details>
+   [ERD CLOUD](https://www.erdcloud.com/d/EAFeEnL43SMDDqydY)
+    
+   ![WIneProject](https://github.com/KYJIN1024/WineProject/assets/111983474/ad758f76-5ede-4e0b-82be-68b341afa816)
+
+   </details>
     
 ## 3. API 설계
 
@@ -238,6 +243,8 @@
 [JAVA Spring Boot 프로젝트- 4. 와인 검색 페이지 구현](https://every-coding.tistory.com/20)
 
 [JAVA Spring Boot 프로젝트- 5. 자유게시판 구현(페이징, 조회수)](https://every-coding.tistory.com/21)
+
+[JAVA Spring Boot 프로젝트- 6.댓글 CRUD 구현](https://every-coding.tistory.com/21)
 
 개발내용은 현재 [블로그](https://every-coding.tistory.com/) 에 작성중입니다.
 
