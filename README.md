@@ -233,7 +233,7 @@
  로컬에서 개발한 Java Spring Boot 웹 프로젝트를 GitHub에 업로드하고, Putty로 EC2 인스턴스에 접속하여 설정 및 Amazon RDS의 DB를 연결하여 구동, Route53, Nginx를 사용하여 도메인주소로 연결하는 구조입니다.
 </details>
 
-## 5. TESTCASE 테스트 케이스
+## 5. TESTCASE 테스트케이스
 <details>
       <summary>기능 테스트케이스 </summary>
  
