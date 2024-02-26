@@ -14,7 +14,8 @@
   - [DB 설계](#2-db-설계)
   - [API 설계](#3-api-설계)
   - [INFRA 구동환경](#4-infra-구동환경)
-  - [★NEW TESTCASE 테스트케이스](#5-TESTCASE-테스트케이스)
+  - [★NEW TESTCASE 테스트케이스](#5-testcase-테스트케이스)
+    
 - [개발내용](#개발내용)
 - [마치며](#마치며)
   - [향후 보완해야할 사항](#1-향후-보완해야할-사항)
@@ -236,7 +237,7 @@
 <details>
       <summary>기능 테스트케이스 </summary>
  
- ![코와사넷기능검증 테스트셋](https://drive.google.com/file/d/1RUBbV3gziCmc-6eJiqtVFqzJiN9oiUYb/view?usp=drive_link)     
+[코와사넷기능테스트케이스](https://github.com/KYJIN1024/WineProject/files/14399864/testcase_kowasanet.pdf) 
 
 ![1](https://github.com/KYJIN1024/WineProject/assets/111983474/a3f305f4-44e2-405f-8fda-c402066f2437)
 ![2](https://github.com/KYJIN1024/WineProject/assets/111983474/9c665359-02f3-4b17-abf3-33887adbfc1c)
