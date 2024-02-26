@@ -2,13 +2,13 @@ function displayResults(data) {
     let resultsDiv = document.getElementById('searchResults');
     resultsDiv.innerHTML = ''; 
     
-    // Check if there are no results
+
     if (data.length === 0) {
         resultsDiv.innerHTML = '<p>검색된 데이터가 없습니다.</p>';
         return;
     }
     
-     // Display the count of search results at the top
+  
     let countDiv = document.createElement('div');
     countDiv.innerHTML = `<h4>검색결과 총 ${data.length}건이 검색되었습니다.</h4>`;
     countDiv.style.margin = "20px 0";
@@ -122,5 +122,50 @@ function detailedSearch(event) {
     fetchSearchResults(ingredient, region, volume, degree);
 }
 
+ const customSelects = document.querySelectorAll("select");
+		      const deleteBtn = document.getElementById('delete')
+		      const choices = new Choices('select',
+		      {
+		        searchEnabled: false,
+		        removeItemButton: true,
+		        itemSelectText: '',
+		      });
+		      for (let i = 0; i < customSelects.length; i++)
+		      {
+		        customSelects[i].addEventListener('addItem', function(event)
+		        {
+		          if (event.detail.value)
+		          {
+		            let parent = this.parentNode.parentNode
+		            parent.classList.add('valid')
+		            parent.classList.remove('invalid')
+		          }
+		          else
+		          {
+		            let parent = this.parentNode.parentNode
+		            parent.classList.add('invalid')
+		            parent.classList.remove('valid')
+		          }
+		        }, false);
+		      }
+		      deleteBtn.addEventListener("click", function(e)
+		      {
+		        e.preventDefault()
+		        
+		         // 드롭다운 선택을 초기화
+		        const deleteAll = document.querySelectorAll('.choices__button')
+		        for (let i = 0; i < deleteAll.length; i++)
+		        {
+		          deleteAll[i].click();
+		        }
+		        
+		    	 // 표시된 검색 결과를 초기화
+		        let resultsDiv = document.getElementById('searchResults');
+		        resultsDiv.innerHTML = ''; // 검색 결과 div의 내용을 지웁니다.
+
+		        // 표시된 결과 카운트를 0으로 리셋합니다.
+		        document.getElementById('resultCount').textContent = '0';
+		        
+		      });
 
 

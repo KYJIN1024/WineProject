@@ -26,7 +26,15 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication; //oauth2토큰으로 객체르르 캐스팅
         String username = token.getPrincipal().getAttribute("name");  // 토큰에서 id추출
         request.getSession().setAttribute("username", username); // 세션에 사용자 이름 저장
-       // logger.info("Username set in session: {}", username);
-        response.sendRedirect("/");  // 홈페이지로 rediret
+      
+        //이전에 방문한 페이지 URL을 세션에서 가져옴
+        String redirectUrl = (String) request.getSession().getAttribute("prevPage");
+        request.getSession().removeAttribute("prevPage");
+        
+        if (redirectUrl != null && !redirectUrl.isEmpty()) {
+            response.sendRedirect(redirectUrl); // 이전 페이지로 리다이렉트
+        } else {
+            response.sendRedirect("/"); // 이전 페이지 정보가 없으면 홈페이지로 리다이렉트
+        }
     }
 }

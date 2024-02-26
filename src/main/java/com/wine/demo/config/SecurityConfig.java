@@ -97,7 +97,7 @@ import com.wine.demo.handler.CustomAuthenticationSuccessHandler;
 	         .antMatchers("/partners/producer/write","/partners/shop/write","/partners/job/write").authenticated()
 	         .antMatchers("/","/register", "/sendVerificationEmail","/checkUsername","/loginsuccess","/login","/login/**","/mypage/**","/mypage-edit","/mypage-edit/**",
 	                 "/save","/findIdPw","/findUsername","/resetPassword","/changePassword","/verifyTempPassword","/community/**","/index" ,"/authenticate", "/login/oauth2/code/google",
-	                 "/checkCurrentPassword","/search","/changePw","/resetPassword","/search/**","/partners/**").permitAll()
+	                 "/checkCurrentPassword","/search","/changePw","/resetPassword","/search/**","/partners/**","/checkEmail","/verifyEmail","/check-current-password","/update-password").permitAll()
 	         .anyRequest().authenticated()
 	         .and()
 	         .formLogin()
@@ -117,7 +117,9 @@ import com.wine.demo.handler.CustomAuthenticationSuccessHandler;
 	         .oauth2Login()
              .loginPage("/login")
              .userInfoEndpoint()
-             .userService(principalOauth2UserService);
+             .userService(principalOauth2UserService)
+             .and()
+             .successHandler(oAuth2AuthenticationSuccessHandler());
 	 }
 	
 	 @Override

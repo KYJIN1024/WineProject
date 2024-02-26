@@ -7,7 +7,6 @@
 	            	});
 	            });
 	            
-	            // 새롭게 추가한 코드
 	            $('.loadModal').on('click', function(event) {
 	                event.preventDefault();
 	                var url = $(this).data('url');
@@ -42,7 +41,6 @@
 	                    	if (comment.freeBoard && comment.freeBoard.frboardid) {
 	                            commentsList.append('<li><a href="/community/freeboard/view?id=' + comment.freeBoard.frboardid + '">' + comment.content + '</a></li>');
 	                        } else {
-	                            // freeBoard가 없는 경우의 처리 (예: 댓글 내용만 표시)
 	                            commentsList.append('<li>' + comment.content + '</li>');
 	                        }
 	                    });

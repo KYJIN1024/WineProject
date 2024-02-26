@@ -107,17 +107,18 @@ public class UserService {
     // 새로운 사용자를 저장하거나 기존 사용자 정보를 업데이트합니다.
     @Transactional
     public void save(User user, boolean encodePassword) {
-    try {
         if (encodePassword) {
+            logger.debug("Encoding password for user: {}", user.getUsername());
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        userRepository.save(user);
-    } catch (Exception e) {
-        // 로그와 함께 예외를 기록합니다.
-        logger.error("Error saving user: {}", user, e);
-        throw e; // 필요한 경우 예외를 다시 던질 수 있습니다.
+        try {
+            userRepository.save(user);
+            logger.info("User saved successfully: {}", user.getUsername());
+        } catch (Exception e) {
+            logger.error("Error saving user: {}", user, e);
+            throw e;
+        }
     }
-   } 
     // 사용자의 현재 비밀번호가 맞는지 확인합니다.
     public boolean checkCurrentPassword(String currentPassword) {
         User user = getAuthenticatedUser();
@@ -164,7 +165,17 @@ public class UserService {
             throw e;
         }
     }
-
+    
+    public boolean verifyEmailCode(String email, String verificationCode) {
+        VerificationCode codeEntity = verificationCodeRepository.findByCodeAndEmail(verificationCode, email);
+        if (codeEntity != null) {
+            //verificationCodeRepository.delete(codeEntity);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     // 인증 코드를 검증하여 해당 인증 코드 엔터티를 반환합니다.
     public VerificationCode findVerificationCode(String code, String email) {
         return verificationCodeRepository.findByCodeAndEmail(code, email);
@@ -248,7 +259,7 @@ public class UserService {
         String formattedNow = now.format(formatter);
 
         // 비밀번호 변경 링크
-        String resetLink = "https://kowasa.net/changePw?token=" + token;
+        String resetLink = "http://localhost:8080/changePw?token=" + token;
 
         // 이메일 메시지 구성
         MimeMessage message = mailSender.createMimeMessage();
@@ -295,6 +306,11 @@ public class UserService {
             throw new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다: " + username);
         }
     }
-    
+
+	public boolean isEmailRegistered(String email) {
+		User user = userRepository.findByEmail(email);
+	    return user != null;
+	}
+	
     
 }

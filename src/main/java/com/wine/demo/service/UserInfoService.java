@@ -99,6 +99,10 @@ public class UserInfoService {
                             .getResultList();
     }
    
+    public boolean checkCurrentPassword(String currentPassword) {
+    	User user = getCurrentUser();
+    	return passwordEncoder.matches(currentPassword, user.getPassword());
+    }
     
     
     

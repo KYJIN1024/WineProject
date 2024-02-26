@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" class="signup">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"  class="signup">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,19 +25,26 @@
                         </div>
                         <div id="usernameResult"></div>
                         <div class="form-group">
-                            <input type="password" class="form-input" name="password" id="password" placeholder="비밀번호"/>
+                            <input type="password" class="form-input" name="password" id="password" placeholder="비밀번호(영문, 대/소문자, 숫자, 특수문자포함한 8자 이상 20자 이하)"/>
                             <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                            <div id="passwordResult" style="color: red;"></div>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-input" name="re_password" id="passwordConfirm" placeholder="비밀번호 재확인"/>
+                            <input type="password" class="form-input" id="confirmPassword" name="confirmPassword"  placeholder="비밀번호 재확인"/>
+                            <span toggle="#passwordConfirm" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                            <div id="passwordConfirmResult" style="color: red;"></div>
                         </div>
                         <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
                             <input type="email" class="form-input" name="email" id="email" placeholder="이메일" style="flex-grow: 1; margin-right: 20px;"/>
-                            <input type="button" name="sendVerificationCode" id="sendVerificationCode" class="form-submit" value="인증번호전송" style="width: 150px;"/>
+                            <input type="button" name="sendVerificationCode" id="sendVerificationCode" class="form-submit" value="인증번호받기" style="width: 150px;"/>
+                          
                         </div>
-                         <div class="form-group">
+                        <div id="emailResult" style="color: red;"></div>
+                         <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;" >
                             <input type="text" class="form-input" name="verificationCode" id="verificationCode" placeholder="인증번호를 입력해주세요"/>
+                            <input type="button" name="checkVerificationCode" id="checkVerificationCode" class="form-submit" value="확인" style="width: 150px;"/>
                         </div>
+                        <div id="verificationCodeResult" style="color: red;"></div>
                         
                         <div class="form-group">
                             <input type="submit" name="submit" id="submit" class="form-submit" value="회원가입"/>

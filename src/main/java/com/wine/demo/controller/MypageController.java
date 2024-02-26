@@ -75,25 +75,37 @@ public class MypageController {
     @PostMapping("/update-password")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody Map<String, String> requestData) {
-        String newPassword = requestData.get("newPassword");
+        String currentPassword = requestData.get("currentPassword");
+    	String newPassword = requestData.get("newPassword");
 
-        if (newPassword == null || newPassword.isEmpty()) {
+    	 // 현재 비밀번호나 새 비밀번호가 비어 있는지 검사
+        if (newPassword == null || newPassword.isEmpty() || currentPassword == null || currentPassword.isEmpty()) {
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
-            errorResponse.put("message", "비밀번호가 입력되지않았습니다.");
-            return ResponseEntity.status(400).body(errorResponse);
+            errorResponse.put("message", "모든 값을 입력해주세요.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+        
+        // 현재 비밀번호가 일치하는지 검사
+        if (!userInfoService.checkCurrentPassword(currentPassword)) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("success", false);
+            errorResponse.put("message", "현재 비밀번호가 올바르지 않습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
 
+        // 비밀번호 변경 시도
         try {
             userInfoService.updatePassword(newPassword);
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
+            response.put("message", "비밀번호가 성공적으로 변경되었습니다.");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
             errorResponse.put("message", "비밀번호 업데이트 중 오류 발생: " + e.getMessage());
-            return ResponseEntity.status(500).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
     

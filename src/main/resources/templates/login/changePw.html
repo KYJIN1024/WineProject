@@ -57,7 +57,7 @@
                 </h2>
                 <h1 class="text-center font-weight-bold text-primary" style="padding-bottom: 20px;">비밀번호 변경<br/></h1>
                 <hr class="my-3" />
-                <form action="/changePw" method="post">
+               <form th:action="@{/changePw(token=${token})}" method="post">
                     <input type="hidden" name="token" th:value="${token}"/>
                     <div class="input-group input-group-lg form-group">
                         <div class="input-group-prepend">
@@ -69,16 +69,19 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text rounded-0"><i class="fas fa-lock"></i></span>
                         </div>
-                        <input type="password" id="password" name="password" class="form-control rounded-0" placeholder="새로운 비밀번호"/>
+                        <input type="password" id="password" name="password" class="form-control rounded-0" placeholder="비밀번호(영문, 대/소문자, 숫자, 특수문자포함한 8자 이상 20자 이하)"/>
+                    	 <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                         <div id="passwordResult" style="color: red;"></div>
                     </div>
                     <div class="input-group input-group-lg form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text rounded-0"><i class="fas fa-lock"></i></span>
                         </div>
-                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control rounded-0" placeholder="비밀번호 재확인"/>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control rounded-0" placeholder="비밀번호 재확인"/> 
                     </div>
+                    <div id="passwordConfirmResult" style="color: red;"></div>
                     <div class="form-group">
-                        <input type="submit" value="비밀번호 변경" class="btn btn-primary btn-lg btn-block myBtn" />
+                        <input type="submit" value="비밀번호 변경" id="submit" class="btn btn-primary btn-lg btn-block myBtn" />
                     </div>
                 </form>
             </div>
@@ -87,4 +90,5 @@
     <!-- Forgot Password Form End -->
     <!-- jQuery CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	 <script th:src="@{js/changepw.js}"></script> 
 </html>

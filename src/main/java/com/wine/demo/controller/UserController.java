@@ -1,11 +1,16 @@
 package com.wine.demo.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,19 +20,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import com.wine.demo.exception.UserNotFoundException;
 import com.wine.demo.model.User;
 import com.wine.demo.model.VerificationCode;
+import com.wine.demo.repository.UserRepository;
 import com.wine.demo.service.UserService;
 
 import java.util.Map;
 
 import javax.mail.MessagingException;
+import javax.persistence.NonUniqueResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
-@Controller
+@Controller 
 public class UserController {
 	 
 	 @Autowired
@@ -38,6 +46,12 @@ public class UserController {
 	 
      @Autowired
      private UserService userService;
+     
+     @Autowired
+     private PasswordEncoder passwordEncoder;
+     
+     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+     
     
      // 로그인페이지
      @GetMapping("/login")
@@ -98,10 +112,26 @@ public class UserController {
         return new ResponseEntity<>("이메일 전송에 성공했습니다. 이메일을 확인해주세요!", HttpStatus.OK);
     }
     
+    @PostMapping("/verifyEmail")
+    @ResponseBody
+    public ResponseEntity<?> verifyEmail(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        String verificationCode = payload.get("verificationCode");
+        boolean isValid = userService.verifyEmailCode(email, verificationCode);
+
+        if (isValid) {
+            return ResponseEntity.ok(Map.of("valid", true));
+        } else {
+            return ResponseEntity.ok(Map.of("valid", false));
+        }
+    }
+    
+
     // 회원가입 요청을 처리
     @PostMapping("/register")
-    @ResponseBody   // HTTP 요청 본문의 내용을 자바 객체로 변환하여 매개변수에 바인딩. 이 경우에는 요청 본문은 Map<String, String> 형태로 변환
-    public String processRegister(@RequestBody Map<String, String> payload) {
+    @ResponseBody
+    public ResponseEntity<?> processRegister(@RequestBody Map<String, String> payload) {
+        logger.info("Register request received: {}", payload);
 
         String username = payload.get("username");
         String password = payload.get("password");
@@ -109,23 +139,40 @@ public class UserController {
         String email = payload.get("email");
         String verificationCode = payload.get("verificationCode");
 
+        // 비밀번호 일치 확인
         if (!password.equals(passwordConfirm)) {
-            return "register";
+            logger.warn("Password and password confirmation do not match for username: {}", username);
+            return ResponseEntity.badRequest().body("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
         }
 
-        VerificationCode code = userService.findVerificationCode(verificationCode, email);
+        // 이메일 중복 확인
+        if (userService.isEmailRegistered(email)) {
+            return ResponseEntity.badRequest().body("이미 등록된 이메일입니다.");
+        }
 
-        if (code != null) {
+        // 인증 코드 확인
+        VerificationCode code = userService.findVerificationCode(verificationCode, email);
+        if (code == null) {
+            logger.warn("Verification code not found or does not match for email: {}", email);
+            return ResponseEntity.badRequest().body("잘못된 인증 코드입니다.");
+        }
+
+        // 사용자 생성 및 저장
+        try {
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
             user.setEmail(email);
             user.setEnabled(true);
             user.setRole("USER");
+
             userService.save(user, true);
-            return "redirect:/login";
-        } else {
-            return "register";
+            logger.info("User registered successfully: {}", username);
+
+            return ResponseEntity.ok("회원가입에 성공하였습니다.");
+        } catch (Exception e) {
+            logger.error("User registration failed for username: {}", username, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원가입 과정에서 오류가 발생했습니다.");
         }
     }
     
@@ -175,22 +222,32 @@ public class UserController {
         }
     }
 
-    // 비밀번호 변경 요청을 처리하는 메서드
+    
     @PostMapping("/changePw")
     public String changeUserPassword(@RequestParam("token") String token,
                                      @RequestParam("password") String newPassword,
+                                     @RequestParam("confirmPassword") String confirmPassword, // 수정됨: confirmPassword 파라미터 추가
                                      Model model) {
         User user = userService.getUserByPasswordResetToken(token);
-        if (user != null && newPassword != null) {
-            userService.changeUserPassword(user, newPassword);
-            model.addAttribute("message","비밀번호가 변경되었습니다.");
-            return "login/message"; // 비밀번호 변경 성공 페이지로 이동
+        if (user != null && newPassword != null && confirmPassword != null) { // 수정됨: 새 비밀번호와 비밀번호 확인이 모두 제공되었는지 확인
+            // 새 비밀번호와 비밀번호 확인이 일치하는지 확인
+            if (newPassword.equals(confirmPassword)) {
+                // 비밀번호 변경 성공
+                userService.changeUserPassword(user, newPassword);
+                model.addAttribute("message", "비밀번호가 변경되었습니다.");
+                return "login/message"; // 비밀번호 변경 성공 페이지로 이동
+            } else {
+                // 새 비밀번호와 비밀번호 확인이 일치하지 않는 경우
+                model.addAttribute("error", "비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+                return "login/changePw"; // 비밀번호 재설정 페이지로 다시 이동
+            }
         } else {
             // 토큰이 유효하지 않거나 새 비밀번호가 제공되지 않은 경우
             model.addAttribute("error", "비밀번호 변경에 실패했습니다.");
             return "login/changePw"; // 비밀번호 재설정 페이지로 다시 이동
         }
     }
+    
     
     //변경완료 메세지 페이지 출력
     @GetMapping("/message")
@@ -200,8 +257,14 @@ public class UserController {
         return "login/message"; 
     }
 
+    @PostMapping("/checkEmail")
+    @ResponseBody
+    public ResponseEntity<String> checkEmail(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        boolean isRegistered = userService.isEmailRegistered(email);
+        return new ResponseEntity<>(String.valueOf(!isRegistered), HttpStatus.OK); // 수정됨
+    }
     
-    
-    
+   
 }
     
